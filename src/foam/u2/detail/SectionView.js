@@ -52,6 +52,16 @@ foam.CLASS({
     }
   ],
 
+  actions: [
+    {
+      name: 'debug',
+      label: 'Debug SectionView',
+      code: function() {
+        console.log(this.data)
+      }
+    }
+  ],
+
   methods: [
     function initE() {
       var self = this;
@@ -85,7 +95,10 @@ foam.CLASS({
                 this.add(a);
               })
             .end();
-        }));
+        }))
+        .startContext({ data: this })
+          .tag(this.DEBUG, { buttonStyle: 'SECONDARY' })
+        .endContext();
     }
   ]
 });

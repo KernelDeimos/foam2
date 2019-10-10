@@ -2227,7 +2227,18 @@ foam.CLASS({
       var e = foam.u2.ViewSpec.createView(this.view, args, this, X);
 
       if ( X.data$ && ! ( args && ( args.data || args.data$ ) ) ) {
+        let a = false;
+        if ( this.name == 'delegates' ) {
+          console.log("It does!");
+          console.log(X.data$);
+          a = true;
+        }
         e.data$ = X.data$.dot(this.name);
+        if ( foam.u2.view.ArrayView.isInstance(e) ) {
+          console.log("ArrayView instance...");
+          if ( a ) console.log("a is true");
+          console.log(e.data$);
+        }
       }
 
       e.fromProperty && e.fromProperty(this);
@@ -2424,7 +2435,13 @@ foam.CLASS({
   properties: [
     {
       name: 'view',
-      value: { class: 'foam.u2.DetailView' },
+      // value: { class: 'foam.u2.DetailView' },
+      expression: function(of) {
+        return {
+          class: 'foam.u2.detail.SectionedDetailView',
+          of: of,
+        };
+      }
     },
     {
       name: 'validationTextVisible',

@@ -67,7 +67,7 @@ foam.CLASS({
       name: 'updateHasDiff',
       isFramed: true,
       code: function() {
-        this.hasDiff = ! this.data.equals(this.workingData);
+        this.hasDiff = !foam.util.equals(this.data, this.workingData);
       }
     }
   ],

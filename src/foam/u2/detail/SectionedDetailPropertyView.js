@@ -223,6 +223,18 @@ foam.CLASS({
     }
   ],
 
+  actions: [
+    {
+      name: 'debug',
+      label: 'Debug SectionDetailPropertyView',
+      code: function() {
+        console.log(this.data$);
+        console.log(this.data);
+        console.log(this.prop);
+      }
+    }
+  ],
+
   methods: [
     function initE() {
       var self = this;
@@ -237,6 +249,8 @@ foam.CLASS({
           var errorSlot = prop.validateObj && prop.validationTextVisible ?
             data.slot(prop.validateObj) :
             foam.core.ConstantSlot.create({ value: null });
+            console.log("!!!");
+            console.log(prop);
 
           return self.E()
             .start(self.Rows)
@@ -308,7 +322,10 @@ foam.CLASS({
                   .end();
               })
             .end();
-        }));
+        }))
+        .startContext({ data: this })
+          .tag(this.DEBUG, { buttonStyle: 'SECONDARY' })
+        .endContext();
     }
   ]
 });

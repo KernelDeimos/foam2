@@ -14,6 +14,16 @@ foam.CLASS({
     'foam.u2.layout.Rows'
   ],
 
+  actions: [
+    {
+      name: 'debug',
+      label: 'Debug VerticalDetailView',
+      code: function() {
+        console.log(this.data)
+      }
+    }
+  ],
+
   methods: [
     function initE() {
       var self = this;
@@ -34,7 +44,10 @@ foam.CLASS({
                   .end();
               })
             .end();
-        }));
+        }))
+        .startContext({ data: this })
+          .tag(this.DEBUG, { buttonStyle: 'SECONDARY' })
+        .endContext();
     }
   ]
 }); 

@@ -38,6 +38,13 @@ foam.CLASS({
         this.data[this.data.length] = '';
         this.updateData();
       }
+    },
+    {
+      name: 'debug',
+      code: function() {
+        console.log(this.data$)
+        console.log(this.data)
+      }
     }
   ],
 
@@ -144,6 +151,7 @@ foam.CLASS({
         }))
         .startContext({ data: this })
           .tag(this.ADD_ROW, { buttonStyle: 'SECONDARY' })
+          .tag(this.DEBUG, { buttonStyle: 'SECONDARY' })
         .endContext();
     }
   ]

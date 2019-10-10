@@ -85,6 +85,15 @@ foam.CLASS({
       }
     }
   ],
+  actions: [
+    {
+      name: 'debug',
+      label: 'Debug FObject View',
+      code: function() {
+        console.log(this.data)
+      }
+    }
+  ],
   methods: [
     function initE() {
       this.SUPER();
@@ -95,6 +104,9 @@ foam.CLASS({
             properties: [this.OBJECT_CLASS, this.DATA]
           }]
         })
+        .startContext({ data: this })
+          .tag(this.DEBUG, { buttonStyle: 'SECONDARY' })
+        .endContext();
     }
   ]
 });

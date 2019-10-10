@@ -65,7 +65,13 @@ foam.CLASS({
       icon: 'images/expand-less.svg',
       isAvailable: function(isCollapsed) { return ! isCollapsed; },
       code: function() { this.isCollapsed = true; }
-    }
+    },
+    {
+      name: 'debug',
+      code: function() {
+        console.log(this);
+      }
+    },
   ],
   methods: [
     function initE() {
@@ -85,6 +91,7 @@ foam.CLASS({
             }))
             .tag(self.SHOW_ACTION, { buttonStyle: 'UNSTYLED' })
             .tag(self.HIDE_ACTION, { buttonStyle: 'UNSTYLED' })
+            .tag(self.DEBUG)
           .end()
         .endContext()
         .add(self.slot(function(view, isCollapsed) {

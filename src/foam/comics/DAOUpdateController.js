@@ -48,6 +48,13 @@ foam.CLASS({
 
   actions: [
     {
+      name: 'debug',
+      isEnabled: function(obj) { return !! obj; },
+      code: function() {
+        console.log(this.obj);
+      }
+    },
+    {
       name: 'save',
       isEnabled: function(obj) { return !! obj; },
       code: function() {
