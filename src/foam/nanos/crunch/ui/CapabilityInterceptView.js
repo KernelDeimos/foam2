@@ -16,6 +16,7 @@ foam.CLASS({
   ],
 
   imports: [
+    'capabilityAquired',
     'stack'
   ],
 
@@ -52,6 +53,7 @@ foam.CLASS({
 
         .startContext({ data: this })
           .tag(this.CANCEL, { buttonStyle: 'SECONDARY' })
+          .tag(this.DEBUG_AQUIRE, { buttonStyle: 'SECONDARY' })
         .endContext()
 
         // Container for the detailview
@@ -72,6 +74,12 @@ foam.CLASS({
       name: 'cancel',
       code: function() {
         this.stack.back();
+      }
+    },
+    {
+      name: 'debugAquire',
+      code: function() {
+        this.capabilityAquired = true;
       }
     }
   ]

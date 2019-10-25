@@ -60,6 +60,7 @@ foam.CLASS({
     'displayWidth',
     'appConfig',
     'as ctrl',
+    'capabilityAquired',
     'currentMenu',
     'group',
     'lastMenuLaunched',
@@ -190,6 +191,10 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'loginSuccess'
+    },
+    {
+      class: 'String',
+      name: 'capabilityAquired'
     },
     {
       class: 'FObjectProperty',
@@ -381,12 +386,14 @@ foam.CLASS({
 
     function requestCapability(capabilityInfo) {
       var self = this;
+      self.capabilityAquired = false;
       return new Promise(function(resolve, reject) {
         self.stack.push({
           class: 'foam.nanos.crunch.ui.CapabilityInterceptView',
           data: self.__subContext__.capabilityDAO,
           capabilityOptions: capabilityInfo.capabilityOptions
         });
+        self.capabilityAquired$.sub(resolve);
       });
     },
 
