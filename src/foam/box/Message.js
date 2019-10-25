@@ -52,6 +52,7 @@ foam.CLASS({
         RemoteException wrapper = new RemoteException();
         wrapper.setId(t.getClass().getName());
         wrapper.setMessage(t.getMessage());
+        wrapper.setServerObject(t);
 
         RPCErrorMessage reply = new RPCErrorMessage();
         reply.setData(wrapper);

@@ -16,6 +16,10 @@ foam.CLASS({
     {
       class: 'String',
       name: 'message'
+    },
+    {
+      class: 'Object',
+      name: 'serverObject'
     }
   ],
 
@@ -27,6 +31,31 @@ foam.CLASS({
       code: function() {
         return this.message;
       }
+    }
+  ]
+});
+
+// TODO: Once modelled exceptions are merged this can be removed in
+//       favour of an exception modelled in foam.nanos.cron
+foam.CLASS({
+  package: 'foam.box',
+  name: 'CapabilityRequiredRemoteException',
+  implements: ['foam.core.Exception'],
+  properties: [
+    {
+      class: 'String',
+      name: 'id',
+      value: 'foam.box.CapabilityRequiredRemoteException'
+    },
+    {
+      class: 'StringArray',
+      name: 'capabilityOptions',
+      documentation: `
+        List of capabilities which can be used to satisfy the permission that
+        caused this error. A capability will only intercept a permission if
+        itself and all of its implied capabilities or permissions can grant the
+        requested action.
+      `
     }
   ]
 });

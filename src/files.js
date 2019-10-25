@@ -260,6 +260,8 @@ FOAM_FILES([
   { name: "foam/nanos/auth/ServiceProviderAware" },
   { name: "foam/nanos/logger/Logger" },
   { name: "foam/nanos/logger/LoggingDAO" },
+  { name: "foam/nanos/crunch/ui/CapabilityInterceptView", flags: ['web'] },
+  { name: "foam/nanos/crunch/crunchtest/TestService" },
   { name: "foam/dao/EasyDAO" },
   { name: "foam/dao/NoSelectAllDAO" },
   { name: "foam/dao/NullDAO" },
@@ -381,6 +383,7 @@ FOAM_FILES([
   { name: "foam/box/AuthServiceClientBox" },
   { name: "foam/box/OneTimeBox" },
   { name: "foam/box/ExportBox" },
+  { name: "foam/box/CapabilityInterceptBox" },
 
   { name: "foam/swift/refines/Stub", flags: ['swift'] },
   { name: "foam/swift/refines/Promised", flags: ['swift'] },
