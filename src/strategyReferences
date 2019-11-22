@@ -38,9 +38,3 @@ p({"class":"foam.strategy.StrategyReference","id":"7cb4fa28-5ab3-42f1-8e25-ce375
 // foam.Class
 p({"class":"foam.strategy.StrategyReference","id":"b0d7bed9-a82e-478b-a0f8-a2d1d2d2d031","desiredModelId":"foam.Class","strategy":"foam.nanos.auth.User"})
 p({"class":"foam.strategy.StrategyReference","id":"20c2262d-4d0b-47a4-9389-b7e6867d894b","desiredModelId":"foam.Class","strategy":"foam.nanos.auth.Group"})
-
-// foam.nanos.cron.Schedule
-p({"class":"foam.strategy.StrategyReference","id":"9476ca76-401e-4b42-b4e6-a2ae947a8150","desiredModelId":"foam.nanos.cron.Schedule","strategy":"foam.nanos.cron.TimeOfDaySchedule"})
-p({"class":"foam.strategy.StrategyReference","id":"83a96646-b19e-4107-840b-97a10f9d945f","desiredModelId":"foam.nanos.cron.Schedule","strategy":"foam.nanos.cron.IntervalSchedule"})
-p({"class":"foam.strategy.StrategyReference","id":"47d65756-db36-4434-8a65-ae95e93c0f34","desiredModelId":"foam.nanos.cron.Schedule","strategy":"foam.nanos.cron.OrSchedule"})
-p({"class":"foam.strategy.StrategyReference","id":"9479d6cc-302a-41c8-90c5-6d83c5a80687","desiredModelId":"foam.nanos.cron.Schedule","strategy":"foam.nanos.cron.CronSchedule"})
