@@ -12,6 +12,10 @@ conf.FOAM_FILES = [
 conf.CLASSPATHS = [
 ];
 
+// Files for classpath: nanopay/src
+conf.PROJECT_FILES = [
+];
+
 // Configuration for the FOAM development server
 conf.server = {
   PORT: 3626,
