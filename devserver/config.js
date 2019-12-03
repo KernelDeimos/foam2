@@ -8,6 +8,10 @@ conf.FOAM_FILES = [
   'foam2/src/foam/support/support.js'
 ];
 
+// Specify classpaths outside of FOAM
+conf.CLASSPATHS = [
+];
+
 // Configuration for the FOAM development server
 conf.server = {
   PORT: 3626,
