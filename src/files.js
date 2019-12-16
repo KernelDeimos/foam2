@@ -527,6 +527,8 @@ FOAM_FILES([
   { name: "foam/apploader/ModelRefines" },
   { name: "foam/foamlink/FoamlinkNodeModelFileDAO" },
   { name: "foam/foamlink/FoamlinkNodeModelFileFetcher" },
+  { name: "foam/foamlink/FoamlinkWebModelFileDAO" },
+  { name: "foam/foamlink/FoamlinkWebModelFileFetcher" },
   { name: "foam/apploader/ClassLoader" },
   { name: "foam/apploader/SubClassLoader" },
   { name: "foam/classloader/OrDAO", flags: ['debug'] },

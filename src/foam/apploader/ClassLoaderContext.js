@@ -29,9 +29,15 @@ foam.SCRIPT({
     'foam.apploader.ClassLoaderContext',
   ],
   code: function() {
+    console.log('AM HERE');
     var classLoaderContext = foam.apploader.ClassLoaderContext.create(
         null, foam.__context__);
     classLoaderContext.classloader.addClassPath(global.FOAM_ROOT);
+    if ( global.CONFIG_CLASSPATHS !== undefined ) {
+      global.CONFIG_CLASSPATHS.forEach(
+        classLoaderContext.classloader.addClassPath.bind(classLoaderContext.classloader)
+      );
+    }
     foam.__context__ = classLoaderContext.__subContext__;
 
     var CLASS = foam.CLASS;

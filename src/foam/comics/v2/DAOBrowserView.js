@@ -152,6 +152,13 @@ foam.CLASS({
       expression: function(config, cannedPredicate, searchPredicate) {
         return config.dao$proxy.where(this.AND(cannedPredicate, searchPredicate));
       }
+    },
+    {
+      class: 'foam.dao.DAOProperty',
+      name: 'searchFilterDAO',
+      expression: function(config, cannedPredicate) {
+        return config.dao$proxy.where(cannedPredicate);
+      }
     }
   ],
   actions: [
@@ -202,31 +209,33 @@ foam.CLASS({
                     .end()
                   .end();
               })
-              .start(self.Cols).addClass(self.myClass('query-bar'))
-                .startContext({
-                  dao: self.config.dao,
-                  controllerMode: foam.u2.ControllerMode.EDIT
-                })
-                  .callIf(self.config.searchMode === self.SearchMode.SIMPLE, function() {
-                    this.tag(self.SimpleSearch, {
-                      showCount: false,
-                      data$: self.searchPredicate$
-                    });
+              .slot(function (searchFilterDAO) {
+                self.E().start(self.Cols).addClass(self.myClass('query-bar'))
+                  .startContext({
+                    dao: searchFilterDAO,
+                    controllerMode: foam.u2.ControllerMode.EDIT
                   })
-                  .callIf(self.config.searchMode === self.SearchMode.FULL, function() {
-                    this.tag(self.FilterSearch, {
-                      data$: self.searchPredicate$
-                    });
-                  })
-                .endContext()
-                .startContext({data: self})
-                  .start(self.EXPORT, {
-                    buttonStyle: foam.u2.ButtonStyle.SECONDARY
-                  })
-                    .addClass(self.myClass('export'))
-                  .end()
-                .endContext()
-              .end()
+                    .callIf(self.config.searchMode === self.SearchMode.SIMPLE, function() {
+                      this.tag(self.SimpleSearch, {
+                        showCount: false,
+                        data$: self.searchPredicate$
+                      });
+                    })
+                    .callIf(self.config.searchMode === self.SearchMode.FULL, function() {
+                      this.tag(self.FilterSearch, {
+                        data$: self.searchPredicate$
+                      });
+                    })
+                  .endContext()
+                  .startContext({data: self})
+                    .start(self.EXPORT, {
+                      buttonStyle: foam.u2.ButtonStyle.SECONDARY
+                    })
+                      .addClass(self.myClass('export'))
+                    .end()
+                  .endContext()
+                .end()
+              })
               .start(self.summaryView, {
                 data: self.predicatedDAO$proxy,
                 enableDynamicTableHeight: false,
