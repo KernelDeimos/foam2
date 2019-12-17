@@ -734,4 +734,7 @@ FOAM_FILES([
 
   { name: "foam/util/concurrent/AbstractAssembly"},
   { name: "foam/util/concurrent/Assembly"},
+
+  { name: "foam/nanos/mrac/medusa" },
+  { name: "foam/nanos/mrac/testing" },
 ]);

@@ -521,6 +521,10 @@ var classes = [
   //concurrent
   'foam.util.concurrent.AbstractAssembly',
   'foam.util.concurrent.Assembly',
+
+  'foam.nanos.mrac.MedusaNodeOutputBlockListener',
+  'foam.nanos.mrac.MedusaNodeOutputBlock',
+  'foam.nanos.mrac.ManualTest',
 ];
 
 var abstractClasses = [

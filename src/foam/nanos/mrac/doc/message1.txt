@@ -1,0 +1,24 @@
+// Idea 1: similar to FileJournal
+p("cronDAO", 1, { data }, { hashing })
+p("cronDAO", 3, { data }, { hashing })
+p("cronDAO", 2, { data }, { hashing })
+
+// Idea 2: JSON mapped by global index
+{
+  1: ["cronDAO", { data }, { hashing }],
+  3: ["cronDAO", { data }, { hashing }],
+  2: ["cronDAO", { data }, { hashing }]
+}
+
+// Idea 3: JSON inside binary format
+
+MEDUSA HEADER
+- number of records [8 byte]
+- MEDUSA RECORD HEADER
+number of records * [MEDUSA RECORD HEADER]
+
+MEDUSA RECORD HEADER
+[global index : 8 byte]
+[offset : 8 byte]
+[length : 8 byte]
+
