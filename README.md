@@ -1,3 +1,6 @@
+# This fork
+This fork of foam2 will be periodically rebased onto foam-framework/foam2.
+
 # FOAM
 
 Build fully featured high performance apps in less time using FOAM.
