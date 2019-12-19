@@ -744,4 +744,9 @@ FOAM_FILES([
   { name: "foam/foamlink/FoamlinkExec" },
   { name: "foam/foamlink/lib" },
   { name: "foam/util/filesystem/FileWalker" },
+  // Foamake
+  { name: "foam/tools/foamake/definitions" },
+  { name: "foam/tools/foamake/FoamakeLogger" },
+  { name: "foam/tools/foamake/ShellExecutorMonitor" },
+  { name: "foam/tools/foamake/ShellExecutor" },
 ]);
