@@ -735,6 +735,10 @@ FOAM_FILES([
   { name: "foam/util/concurrent/AbstractAssembly"},
   { name: "foam/util/concurrent/Assembly"},
 
+  // Medusa
   { name: "foam/nanos/mrac/medusa" },
-  { name: "foam/nanos/mrac/testing" },
+  { name: "foam/nanos/mrac/ThresholdMedusaBuffer" },
+  { name: "foam/nanos/mrac/OrderMedusaBuffer" },
+  { name: "foam/nanos/mrac/test/testutil" },
+  { name: "foam/nanos/mrac/test/ThresholdMedusaBufferTest" },
 ]);

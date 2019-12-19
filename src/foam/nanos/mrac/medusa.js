@@ -4,16 +4,37 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  */
 
+foam.CLASS({
+  package: 'foam.nanos.mrac',
+  name: 'MedusaNodeOutputRecord',
+
+  properties: [
+    {
+      name: 'globalIndex',
+      class: 'Long'
+    },
+    {
+      name: 'record',
+      class: 'String'
+    },
+    {
+      name: 'hashObject',
+      class: 'String'
+    }
+  ]
+})
+
 foam.INTERFACE({
   package: 'foam.nanos.mrac',
-  name: 'MedusaNodeOutputBlockListener',
+  name: 'MedusaBuffer',
+
+  // TODO: maybe this can be a foam.dao.Sink
 
   methods: [
     {
-      name: 'onMedusaDataRecord',
+      name: 'put',
       args: [
-        { name: 'globalOffset', type: 'Long' },
-        { name: 'recordData', type: 'String' }
+        { name: 'record', type: 'MedusaNodeOutputRecord' }
       ]
     }
   ]
@@ -23,25 +44,40 @@ foam.CLASS({
   package: 'foam.nanos.mrac',
   name: 'MedusaNodeOutputBlock',
 
+  documentation: `
+    MedusaNodeOutputBlock stores JSON objects with meta information attached in
+    a binary format. The purpose is to allow quick reads of global indexes and
+    hash objects before the record's JSON data is processed.
+  `,
+
   javaImports: [
     'java.nio.channels.FileChannel',
     'java.nio.ByteBuffer',
     'java.nio.charset.StandardCharsets',
   ],
 
-  constants: {
-    'MEDUSA_HEADER_SIZE': 2*8,
-    'MEDUSA_RECORD_SIZE': 8 + 2*2*8
-  },
+  constants: [
+    {
+      name:'MEDUSA_HEADER_SIZE',
+      type: 'int',
+      value: 2*8,
+    },
+    {
+      name:'MEDUSA_RECORD_SIZE',
+      type: 'int',
+      value: 8 + 2*2*8,
+    }
+  ],
 
   properties: [
     {
+      class: 'Object',
       javaType: `FileChannel`,
       name: 'data'
     },
     {
       class: 'FObjectProperty',
-      of: 'foam.nanos.mrac.MedusaNodeOutputBlockListener',
+      of: 'foam.nanos.mrac.MedusaBuffer',
       name: 'listener'
     }
   ],
@@ -49,36 +85,39 @@ foam.CLASS({
   methods: [
     {
       name: 'parseBlock',
+      javaThrows: ['java.io.IOException'],
       javaCode: `
         int readSize = -2;
         ByteBuffer buf = null;
-        data.position(0);
+        getData().position(0);
 
         // Read protocol version and number of records
         buf = ByteBuffer.allocate(MEDUSA_HEADER_SIZE);
-        readSize = data.read(buf, 0, MEDUSA_HEADER_SIZE);
+        readSize = getData().read(buf);
         if ( readSize != MEDUSA_HEADER_SIZE ) {
           // TODO: handle format error
           System.err.println("TODO: handle format error (MEDUSA_HEADER)");
           System.exit(1);
         }
+        buf.flip();
         long version = buf.getLong();
         long numRecords = buf.getLong();
 
-        if ( version !== 0 ) {
+        if ( version != 1 ) {
           // TODO: handle version error
           System.err.println("TODO: handle version error");
           System.exit(1);
         }
 
-        int recordHeaderSectionSize = MEDUSA_RECORD_SIZE * numRecords;
+        int recordHeaderSectionSize = MEDUSA_RECORD_SIZE * (int)numRecords;
         buf = ByteBuffer.allocate(recordHeaderSectionSize);
-        readSize = data.read(buf, 0, recordHeaderSectionSize);
+        readSize = getData().read(buf);
         if ( readSize != recordHeaderSectionSize ) {
           // TODO: handle format error
           System.err.println("TODO: handle format error (MEDUSA_RECORD_HEADER)");
           System.exit(1);
         }
+        buf.flip();
 
         long dataSectionStart = MEDUSA_HEADER_SIZE + recordHeaderSectionSize;
         // At this point it is safe to use RANDOM ACCESS on this.data!
@@ -90,19 +129,27 @@ foam.CLASS({
           long hashOffset = buf.getLong();
           long hashLength = buf.getLong();
 
+          ByteBuffer bufLocal = null;
+
           // Read record data into string
-          buf = ByteBuffer.allocate((int) dataLength);
-          data.position(dataSectionStart + dataOffset);
-          buf.read(buf, 0, dataLength);
-          String recordData = StandardCharsets.UTF_8.decode(buf).toString();
+          bufLocal = ByteBuffer.allocate((int) dataLength);
+          getData().position(dataSectionStart + dataOffset);
+          getData().read(bufLocal);
+          bufLocal.flip();
+          String recordData = StandardCharsets.UTF_8.decode(bufLocal).toString();
 
           // Read record hash object into string
-          buf = ByteBuffer.allocate((int) hashLength);
-          data.position(dataSectionStart + hashOffset);
-          buf.read(buf, 0, hashLength);
-          String recordHashObject = StandardCharsets.UTF_8.decode(buf).toString();
+          bufLocal = ByteBuffer.allocate((int) hashLength);
+          getData().position(dataSectionStart + hashOffset);
+          getData().read(bufLocal);
+          bufLocal.flip();
+          String recordHashObject = StandardCharsets.UTF_8.decode(bufLocal).toString();
 
-          listener.onMedusaDataRecord(globalIndex, recordData);
+          getListener().put(new MedusaNodeOutputRecord.Builder(getX())
+            .setGlobalIndex(globalIndex)
+            .setRecord(recordData)
+            .setHashObject(recordHashObject)
+            .build());
         }
       `
     }

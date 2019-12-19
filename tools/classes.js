@@ -522,9 +522,15 @@ var classes = [
   'foam.util.concurrent.AbstractAssembly',
   'foam.util.concurrent.Assembly',
 
-  'foam.nanos.mrac.MedusaNodeOutputBlockListener',
+  'foam.nanos.mrac.MedusaNodeOutputRecord',
   'foam.nanos.mrac.MedusaNodeOutputBlock',
-  'foam.nanos.mrac.ManualTest',
+  'foam.nanos.mrac.MedusaBuffer',
+  'foam.nanos.mrac.ThresholdMedusaBuffer',
+  'foam.nanos.mrac.OrderMedusaBuffer',
+  'foam.nanos.mrac.test.MockMedusaBuffer',
+  'foam.nanos.mrac.test.TestFileGenerator',
+  'foam.nanos.mrac.test.ThresholdMedusaBufferTest',
+  'foam.nanos.mrac.test.OrderMedusaBufferTest',
 ];
 
 var abstractClasses = [
