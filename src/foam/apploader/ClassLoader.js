@@ -35,6 +35,14 @@ have multiple classloaders running alongside eachother`
       path: 'foam.apploader.NodeModelFileDAO',
       flags: ['node'],
     },
+    {
+      path: 'foam.foamlink.FoamlinkNodeModelFileDAO',
+      flags: ['node'],
+    },
+    {
+      path: 'foam.foamlink.FoamlinkWebModelFileDAO',
+      flags: ['node'],
+    },
   ],
   properties: [
     {
@@ -54,7 +62,11 @@ have multiple classloaders running alongside eachother`
     {
       name: 'addClassPath',
       code: function(path) {
-        var cls = this[foam.isServer ? 'NodeModelFileDAO' : 'WebModelFileDAO'];
+        var cls = this[
+          foam.isServer
+          ? (foam.hasFoamlink ? 'FoamlinkNodeModelFileDAO' : 'NodeModelFileDAO')
+          : (foam.hasFoamlink ? 'FoamlinkWebModelFileDAO' : 'WebModelFileDAO')
+        ];
         var modelDAO = cls.create({root: path}, this);
 
         if ( this.modelDAO ) {

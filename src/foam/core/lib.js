@@ -49,6 +49,12 @@ foam = {
   }
 };
 
+if ( typeof window !== 'undefined' ) {
+window.FOAMLINK_DATA=window.location.origin+'/foam2/src/foamlinkoutput.json';
+window.CONFIG_CLASSPATHS = [
+  window.location.origin+'/nanopay/src'
+];
+}
 
 /** Setup nodejs-like 'global' on web */
 if ( ! foam.isServer ) global = window;
@@ -70,6 +76,22 @@ Object.defineProperty(
     enumerable: false
   }
 );
+
+
+/**
+ * Check for the FOAMLINK_DATA global. If it is set, FOAMLink will be
+ * enabled in the server-side classloader
+ */
+if ( typeof global.FOAMLINK_DATA !== 'undefined' ) {
+  setTimeout(() => {
+    console.log("A foamlink data file was loaded")
+    console.log(foam.foamlink.dataFile);
+  }, 10000);
+  foam.hasFoamlink = true;
+  foam.foamlink = {
+    dataFile: global.FOAMLINK_DATA
+  };
+}
 
 
 /**
