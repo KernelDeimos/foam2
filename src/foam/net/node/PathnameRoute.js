@@ -21,7 +21,7 @@ foam.CLASS({
   implements: [ 'foam.net.node.Route' ],
   flags: ['node'],
   imports: [ 'parentPrefix?' ],
-  exports: [ 'pathname' ],
+  exports: [ 'pathname as parentPathname' ],
 
   properties: [
     {

@@ -38,6 +38,7 @@ foam.CLASS({
           '.js': 'text/javascript',
           '.css': 'text/css',
           '.html': 'text/html',
+          '.svg': 'image/svg+xml',
           __default: 'application/octet-stream'
         };
       }

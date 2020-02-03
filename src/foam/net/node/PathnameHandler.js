@@ -23,5 +23,15 @@ foam.CLASS({
   documentation: `Handler that recieves its pathname from a PathnameRoute (or
       similar) export.`,
 
-  imports: [ 'pathname?' ],
+  imports: [ 'parentPathname? as ctxPathname' ],
+
+  properties: [
+    {
+      class: 'String',
+      name: 'pathname',
+      expression: function(ctxPathnamePrefix) {
+        return ctxPathname || '';
+      }
+    }
+  ]
 });

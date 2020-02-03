@@ -61,5 +61,11 @@ foam.CLASS({
       }
       return this.delegate.handle(req, res);
     }
+  ],
+
+  listeners: [
+    function onAddRoute(route) {
+      return this;
+    }
   ]
 });
