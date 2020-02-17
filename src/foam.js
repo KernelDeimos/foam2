@@ -64,6 +64,7 @@
     var path = caller.substring(0, caller.lastIndexOf('src/')+4);
 
     if ( typeof global !== 'undefined' && ! global.FOAM_ROOT ) global.FOAM_ROOT = path;
+    else if ( typeof global !== 'undefined' ) path = global.FOAM_ROOT; // NodeCG fix
 
     return function (filename) {
       if ( typeof global !== 'undefined' ) {
