@@ -30,7 +30,8 @@ foam.CLASS({
     'capabilityCategoryDAO',
     'capabilityDAO',
     'capabilityCategoryCapabilityJunctionDAO',
-    'registerElement'
+    'registerElement',
+    'crunchController'
   ],
 
   messages: [
@@ -158,6 +159,9 @@ foam.CLASS({
             grid = grid
               .start(self.GUnit, { columns: 4 })
                 .tag(self.CapabilityCardView, { data: cap })
+                .on('click', () => {
+                  self.crunchController.launchWizard(cap.id);
+                })
               .end()
               ;
           }
