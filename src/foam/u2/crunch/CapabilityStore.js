@@ -75,7 +75,7 @@ foam.CLASS({
           .end()
           .select(self.capabilityCategoryDAO, function(category) {
             return self.Tab.create({ label: category.name })
-              // .add(self.renderSection(category))
+              .add(self.renderSection(category))
               ;
           }, false, true)
         .end()
