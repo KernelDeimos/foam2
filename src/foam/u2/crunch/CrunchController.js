@@ -54,7 +54,6 @@ foam.CLASS({
         return self.capabilityDAO.where(
           self.IN(self.Capability.ID, tcList)
         ).select().then((results) => {
-          console.log('cap results', results);
           // Get the Capability objects in a map because it's faster than sorting
           var capabilityMap = {};
           results.array.forEach((cap) => { capabilityMap[cap.id] = cap; });
