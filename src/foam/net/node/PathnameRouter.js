@@ -33,8 +33,10 @@ foam.CLASS({
       var route = this.PathnamePrefixRoute.create({
         pathnamePrefix: pathnamePrefix
       });
+      /*
       foam.assert(this.PathnamePrefixHandler.isInstance(handler),
                   'PathnameRouter: Expected PathnamePrefixHandler');
+      */
       return this.addRoute(route, handler);
     },
     function addPathname(pathname, handler) {
