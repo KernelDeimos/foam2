@@ -11,7 +11,7 @@ foam.CLASS({
 
   documentation: 'Filter view for integers.',
 
-  imports: [
+  implements: [
     'foam.mlang.Expressions',
   ],
 
