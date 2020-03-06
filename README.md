@@ -82,3 +82,6 @@ to run the unit tests.
 # Contributing
 
 Before contributing code to FOAM, you must complete the [Google Individual Contributor License Agreement](https://cla.developers.google.com/about/google-individual?csw=1).
+
+Test change do not merge this
+something foam.core blah foam/core
