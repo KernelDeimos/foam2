@@ -442,7 +442,7 @@ foam.CLASS({
       self.capabilityCancelled = false;
       return new Promise(function(resolve, reject) {
         self.stack.push({
-          class: 'foam.nanos.crunch.ui.CapabilityInterceptView',
+          class: 'foam.u2.crunch.CapabilityInterceptView',
           data: self.__subContext__.capabilityDAO,
           capabilityOptions: capabilityInfo.capabilityOptions
         });

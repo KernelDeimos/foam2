@@ -1,4 +1,4 @@
-/**
+/**OList
  * @license
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
@@ -274,7 +274,6 @@ FOAM_FILES([
   { name: "foam/nanos/notification/Notifiable" },
   { name: "foam/nanos/notification/EmailSetting" },
   { name: "foam/nanos/notification/NotificationSetting" },
-  { name: "foam/nanos/crunch/ui/CapabilityInterceptView", flags: ['web'] },
   { name: "foam/nanos/crunch/crunchtest/TestService" },
   { name: "foam/dao/EasyDAO" },
   { name: "foam/dao/NoSelectAllDAO" },
@@ -543,6 +542,7 @@ FOAM_FILES([
   { name: "foam/u2/crunch/CapabilityCardView", flags: ['web'] },
   { name: "foam/u2/crunch/CapabilityFeatureView", flags: ['web'] },
   { name: "foam/u2/crunch/CapabilityStore", flags: ['web'] },
+  { name: "foam/u2/crunch/CapabilityInterceptView", flags: ['web'] },
   { name: "foam/apploader/ModelRefines" },
   { name: "foam/foamlink/FoamlinkNodeModelFileDAO" },
   { name: "foam/foamlink/FoamlinkNodeModelFileFetcher" },
