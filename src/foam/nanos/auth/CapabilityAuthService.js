@@ -104,7 +104,7 @@ foam.CLASS({
         User user = (User) x.get("user");
 
         boolean hasViaCrunch = capabilityCheck(x, user, permission);
-        return user != null && ( hasViaCrunch || getDelegate().check(x, permission) );
+        return ( user != null && hasViaCrunch ) || getDelegate().check(x, permission);
       `
     },
     {
