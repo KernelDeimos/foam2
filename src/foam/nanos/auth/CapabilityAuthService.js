@@ -68,7 +68,7 @@ foam.CLASS({
           return;
 
         DAO userCapabilityJunctionDAO = (DAO) getX().get("userCapabilityJunctionDAO");
-        DAO capabilityDAO = (getX().get("capabilityDAO") == null ) ? (DAO) getX().get("capabilityDAO") : (DAO) getX().get("localCapabilityDAO");
+        DAO capabilityDAO = (getX().get("localCapabilityDAO") == null ) ? (DAO) getX().get("capabilityDAO") : (DAO) getX().get("localCapabilityDAO");
         if ( capabilityDAO == null || userCapabilityJunctionDAO == null )
           return;
 
