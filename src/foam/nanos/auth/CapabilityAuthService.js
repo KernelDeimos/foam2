@@ -27,6 +27,7 @@ foam.CLASS({
     'foam.mlang.predicate.AbstractPredicate',
     'foam.mlang.predicate.Predicate',
     'foam.nanos.crunch.Capability',
+    'foam.nanos.crunch.CapabilityRuntimeException',
     'foam.nanos.crunch.CapabilityJunctionStatus',
     'foam.nanos.crunch.UserCapabilityJunction',
     'foam.nanos.logger.Logger',
@@ -101,6 +102,7 @@ foam.CLASS({
       Check if the given input string is in the userCapabilityJunctions or implied by a capability in userCapabilityJunctions for the current context user
       `,
       javaCode: `
+        System.out.printf("\\033[33;1mpermission (check) %s\\033[0m\\n", permission);
         User user = (User) x.get("user");
 
         boolean hasViaCrunch = capabilityCheck(x, user, permission);
@@ -110,6 +112,7 @@ foam.CLASS({
     {
       name: 'checkUser',
       javaCode: `
+        System.out.printf("\\033[33;1mpermission (check user) %s\\033[0m\\n", permission);
         boolean hasViaCrunch = capabilityCheck(x, user, permission);
         return hasViaCrunch || getDelegate().checkUser(x, user, permission);
       `
@@ -205,7 +208,49 @@ foam.CLASS({
           logger.error("check", permission, e);
         }
 
-        return result;
+        if ( result ) return true;
+        maybeIntercept(permission);
+        return false;
+      `
+    },
+    {
+      name: 'maybeIntercept',
+      documentation: `
+        This method might throw a CapabilityRuntimeException if a capability can intercept.
+      `,
+      args: [
+        {
+          name: 'permission',
+          type: 'String'
+        }
+      ],
+      javaCode: `
+        System.out.printf("\\033[32;1m === LOOK HERE === \\033[0m\\n");
+
+        DAO capabilityDAO = (getX().get("localCapabilityDAO") == null ) ? (DAO) getX().get("capabilityDAO") : (DAO) getX().get("localCapabilityDAO");
+
+        // Find intercepting capabilities
+        List<Capability> capabilities =
+          ( (ArraySink) capabilityDAO.where(CONTAINS_IC(
+            Capability.PERMISSIONS_INTERCEPTED, permission))
+            .select(new ArraySink()) ).getArray();
+
+        List<Capability> capabilitiesAll =
+          ( (ArraySink) capabilityDAO
+            .select(new ArraySink()) ).getArray();
+
+        System.out.printf("permission %s\\n", permission);
+        System.out.printf("size       %d\\n", capabilities.size());
+        System.out.printf("size all   %d\\n", capabilitiesAll.size());
+
+        // Do not throw runtime exception of there are no intercepts
+        if ( capabilities.size() < 1 ) return;
+
+        // Add capabilities to a runtime exception and throw it
+        CapabilityRuntimeException ex = new CapabilityRuntimeException(
+          "Permission denied; capabilities available.");
+        for ( Capability cap : capabilities ) ex.addCapabilityId(cap.getId());
+        throw ex;
       `
     }
   ]
