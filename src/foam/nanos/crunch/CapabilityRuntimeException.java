@@ -20,8 +20,8 @@ public class CapabilityRuntimeException extends AuthorizationException {
     init();
   }
 
-  public ArrayList<String> getCapabilities() {
-    return capabilities;
+  public String[] getCapabilities() {
+    return capabilities.toArray(new String[capabilities.size()]);
   }
 
   public void addCapabilityId(String capabilityId) {
