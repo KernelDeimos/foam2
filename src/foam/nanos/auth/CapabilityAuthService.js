@@ -147,7 +147,10 @@ foam.CLASS({
 
         String key = user.getId() + permission;
         Boolean result = ( (Map<String, Boolean>) getCache() ).get(key);
-        if ( result != null ) return result || getDelegate().checkUser(x, user, permission);
+        if ( result != null ) {
+          if ( ! result ) maybeIntercept(permission);
+          return result
+        }
 
         result = false;
 
