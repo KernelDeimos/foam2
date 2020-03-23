@@ -147,7 +147,7 @@ foam.CLASS({
         Boolean result = ( (Map<String, Boolean>) getCache() ).get(key);
         if ( result != null ) {
           if ( ! result ) maybeIntercept(permission);
-          return result
+          return result;
         }
 
         result = false;
