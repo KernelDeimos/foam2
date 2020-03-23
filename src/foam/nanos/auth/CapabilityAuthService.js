@@ -102,7 +102,6 @@ foam.CLASS({
       Check if the given input string is in the userCapabilityJunctions or implied by a capability in userCapabilityJunctions for the current context user
       `,
       javaCode: `
-        System.out.printf("\\033[33;1mpermission (check) %s\\033[0m\\n", permission);
         User user = (User) x.get("user");
 
         boolean hasViaCrunch = capabilityCheck(x, user, permission);
@@ -112,7 +111,6 @@ foam.CLASS({
     {
       name: 'checkUser',
       javaCode: `
-        System.out.printf("\\033[33;1mpermission (check user) %s\\033[0m\\n", permission);
         boolean hasViaCrunch = capabilityCheck(x, user, permission);
         return hasViaCrunch || getDelegate().checkUser(x, user, permission);
       `
@@ -228,8 +226,6 @@ foam.CLASS({
         }
       ],
       javaCode: `
-        System.out.printf("\\033[32;1m === LOOK HERE === \\033[0m\\n");
-
         DAO capabilityDAO = (getX().get("localCapabilityDAO") == null ) ? (DAO) getX().get("capabilityDAO") : (DAO) getX().get("localCapabilityDAO");
 
         // Find intercepting capabilities
@@ -241,10 +237,6 @@ foam.CLASS({
         List<Capability> capabilitiesAll =
           ( (ArraySink) capabilityDAO
             .select(new ArraySink()) ).getArray();
-
-        System.out.printf("permission %s\\n", permission);
-        System.out.printf("size       %d\\n", capabilities.size());
-        System.out.printf("size all   %d\\n", capabilitiesAll.size());
 
         // Do not throw runtime exception of there are no intercepts
         if ( capabilities.size() < 1 ) return;
