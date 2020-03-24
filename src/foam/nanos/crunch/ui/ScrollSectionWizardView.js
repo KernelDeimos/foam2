@@ -8,12 +8,21 @@ foam.CLASS({
   package: 'foam.nanos.crunch.ui',
   name: 'ScrollSectionWizardView',
   extends: 'foam.u2.detail.MultipleModelSectionedDetailView',
+  implements: [
+    'foam.u2.crunch.CapabilityWizard'
+  ],
+
+  topics: [ 'exitPromiseResolver_' ],
 
   documentation: `Simply displays "sections" consecutively.`,
 
   imports: [
     'notify',
     'stack'
+  ],
+
+  requires: [
+    'foam.u2.crunch.CapabilityWizardExitCancelled',
   ],
 
   css: `
@@ -35,6 +44,15 @@ foam.CLASS({
       class: 'foam.u2.ViewSpec',
       name: 'sectionView',
       value: { class: 'foam.u2.detail.SectionView' }
+    },
+    {
+      name: 'capabilityWizardExitPromise',
+      factory: function () {
+        var self = this;
+        return new Promise((resolve, reject) => {
+          self.exitPromiseResolver.sub(exitInfo => resolve(exitInfo));
+        });
+      }
     }
   ],
 
@@ -54,6 +72,10 @@ foam.CLASS({
   ],
 
   methods: [
+    function init() {
+      // Make sure capabilityWizardExitPromise's factory has been executed
+      (() => { this.capabilityWizardExitPromise })();
+    },
     function initE() {
       this.SUPER();
       this.addClass(this.myClass());
@@ -110,6 +132,8 @@ foam.CLASS({
       name: 'save',
       code: function(x) {
         console.log('saving');
+        this.exitPromiseResolver_.pub(
+          this.CapabilityWizardExitCancelled.create());
         this.stack.back();
       }
     }
