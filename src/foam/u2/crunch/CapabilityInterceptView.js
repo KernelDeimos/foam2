@@ -62,10 +62,8 @@ foam.CLASS({
           .tag(this.AQUIRE, { buttonStyle: 'SECONDARY' })
         .endContext()
 
-        // Container for the detailview
         .start()
           .addClass(this.myClass('detail-container'))
-          // TODO: Replace with Capability selection view appropriate for any user
           .add(this.slot(function (capabilityOptions) {
             var spot = this.E('span')
             this.data.where(
