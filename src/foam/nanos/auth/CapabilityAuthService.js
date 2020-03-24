@@ -230,8 +230,8 @@ foam.CLASS({
 
         // Find intercepting capabilities
         List<Capability> capabilities =
-          ( (ArraySink) capabilityDAO.where(CONTAINS_IC(
-            Capability.PERMISSIONS_INTERCEPTED, permission))
+          ( (ArraySink) capabilityDAO.where(IN(
+            permission, Capability.PERMISSIONS_INTERCEPTED))
             .select(new ArraySink()) ).getArray();
 
         List<Capability> capabilitiesAll =

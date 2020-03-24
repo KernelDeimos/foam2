@@ -69,7 +69,7 @@ foam.CLASS({
           .add(this.slot(function (capabilityOptions) {
             var spot = this.E('span')
             this.data.where(
-                this.CONTAINS(capabilityOptions, view.Capability.ID))
+                this.IN(view.Capability.ID, capabilityOptions))
               .select().then((result) => {
                 let arr = result.array;
                 let grid = view.Grid.create();
