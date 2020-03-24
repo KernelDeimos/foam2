@@ -7,7 +7,7 @@
 foam.CLASS({
   package: 'foam.u2.crunch',
   name: 'CapabilityInterceptView',
-  extends: 'foam.u2.Element',
+  extends: 'foam.u2.View',
 
   implements: [ 'foam.mlang.Expressions' ],
 
@@ -26,12 +26,10 @@ foam.CLASS({
   ],
 
   properties: [
-    'data',
     {
       name: 'capabilityOptions',
       class: 'StringArray'
     },
-
     {
       name: 'capabilityView',
       class: 'foam.u2.ViewSpec',
