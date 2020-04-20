@@ -42,7 +42,7 @@ foam.CLASS({
     {
       name: 'sectionsList',
       factory: null,
-      expression: function(ofList) {
+      expression: function(ofList, daoList) {
         if ( ! ofList ) return [];
 
         sections = ofList.map((of, index) => {
@@ -62,6 +62,17 @@ foam.CLASS({
       class: 'Array',
       name: 'capsList',
       documentation: 'Contains ids of capabilities to create ucjs with.'
+    },
+    {
+      class: 'FObjectArray',
+      name: 'capabilityInfos',
+      of: 'foam.nanos.crunch.ui.WizardCapabilityInfo',
+      postSet: function (o, n) {
+        // This populates ofList, capsList, and daoList
+        for ( let [hereProp, thereProp] of Object.entries({
+          ofList: 'of', capsList: 'id', daoList: 'daoKey'
+        }) ) this[hereProp] = n.map(item => item[thereProp]);
+      }
     }
   ],
 
