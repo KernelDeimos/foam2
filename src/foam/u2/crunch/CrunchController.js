@@ -68,7 +68,6 @@ foam.CLASS({
                 self.EQ(self.UserCapabilityJunction.SOURCE_ID, userID),
                 self.EQ(self.UserCapabilityJunction.TARGET_ID, cap.id))
             ).then(data => {
-              console.log(cap.of);
               return self.WizardCapabilityInfo.create({
                 id: cap.id,
                 of: cap.of,
@@ -86,11 +85,9 @@ foam.CLASS({
 
         });
       });
-      window.cctrl = this;
       this.capabilityDAO.find(capabilityId).then((cap) => {
         // Summon the wizard; accio!
         capInfosPromise.then(capInfos => {
-          console.log('INFOS', capInfos);
           self.stack.push({
             class: 'foam.nanos.crunch.ui.ScrollSectionWizardView',
             title: cap.name,
