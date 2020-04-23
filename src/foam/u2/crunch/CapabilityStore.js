@@ -99,10 +99,6 @@ foam.CLASS({
                 this.add(e);
               }
             });
-            // .select(self.capabilityCategoryDAO, function(category) {
-            //   console.log(category);
-            // }, false, false)
-          })
         .end()
         ;
     },
