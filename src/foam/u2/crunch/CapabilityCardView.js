@@ -51,7 +51,6 @@ foam.CLASS({
           this.add(badge);
           badge
             .addClass(self.s.myClass('badge'))
-          setTimeout(() => { console.log('hello') }, 3000);
           self.userCapabilityJunctionDAO.find(self.AND(
             self.EQ(self.UserCapabilityJunction.SOURCE_ID, self.user.id),
             self.EQ(self.UserCapabilityJunction.TARGET_ID, self.data.id),
