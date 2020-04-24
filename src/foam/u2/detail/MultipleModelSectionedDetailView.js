@@ -16,63 +16,39 @@ foam.CLASS({
     'foam.core.Action',
     'foam.core.Property',
     'foam.layout.Section',
-    'foam.layout.SectionAxiom'
+    'foam.layout.SectionAxiom',
+    'foam.nanos.crunch.ui.ScrollSectionWizardViewSection'
   ],
 
   properties: [
     {
-      class: 'Array',
-      name: 'argsList',
-      documentation: 'Contains key for submitting data. It is the id of the data we want to update.'
-    },
-    {
-      class: 'Array',
-      name: 'daoList',
-      documentation: 'Contains the daoKey for source model, specifying where data should be submitted too.'
-    },
-    {
-      class: 'FObjectArray',
-      of: 'foam.core.Class',
-      name: 'ofList',
-      documentation: 'Currently taking in a string of class paths',
-      adapt: function(_, n) {
-        return n.map((of) => typeof of === 'string' ? foam.lookup(of) : of);
-      }
-    },
-    {
-      name: 'sectionsList',
+      name: 'sections',
       factory: null,
-      expression: function(ofList, daoList) {
-        if ( ! ofList ) return [];
+      expression: function(capabilityInfos) {
+        if ( ! capabilityInfos ) return [];
 
-        sections = ofList.map((of, index) => {
-          let listOfSectionAxiomsFromClass = of.getAxiomsByClass(this.SectionAxiom);
+        sections = capabilityInfos.map((capInfo) => {
+          let listOfSectionAxiomsFromClass = capInfo.of.getAxiomsByClass(
+            this.SectionAxiom);
           var listOfSectionsFromClass = listOfSectionAxiomsFromClass
             .sort((a, b) => a.order - b.order)
-            .map((a) => this.Section.create().fromSectionAxiom(a, of));
-          let unSectionedPropertiesSection = this.checkForUnusedProperties(listOfSectionsFromClass, of); // this also will handle models with no sections
+            .map((a) => this.Section.create().fromSectionAxiom(a, capInfo.of));
+          let unSectionedPropertiesSection = this.checkForUnusedProperties(
+            listOfSectionsFromClass, capInfo.of); // this also will handle models with no sections
           if ( unSectionedPropertiesSection ) listOfSectionsFromClass.push(unSectionedPropertiesSection);
-          return { 'data': of.create({}, this), 'sections': listOfSectionsFromClass, 'dao': daoList[index], 'daoKey': this.argsList[index] };
+          return this.ScrollSectionWizardViewSection.create({
+            capabilityInfo: capInfo,
+            sections: listOfSectionsFromClass
+          });
         });
 
         return sections;
       }
     },
     {
-      class: 'Array',
-      name: 'capsList',
-      documentation: 'Contains ids of capabilities to create ucjs with.'
-    },
-    {
       class: 'FObjectArray',
       name: 'capabilityInfos',
       of: 'foam.nanos.crunch.ui.WizardCapabilityInfo',
-      postSet: function (o, n) {
-        // This populates ofList, capsList, and daoList
-        for ( let [hereProp, thereProp] of Object.entries({
-          ofList: 'of', capsList: 'id', daoList: 'daoKey'
-        }) ) this[hereProp] = n.map(item => item[thereProp]);
-      }
     }
   ],
 

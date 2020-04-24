@@ -750,6 +750,7 @@ FOAM_FILES([
   { name: "foam/nanos/crunch/ui/WizardCapabilityInfo" },
   { name: "foam/u2/detail/MultipleModelSectionedDetailView" },
   { name: "foam/nanos/crunch/ui/ScrollSectionWizardView" },
+  { name: "foam/nanos/crunch/ui/ScrollSectionWizardViewSection" },
 
   { name: "foam/graphics/ZoomMapView" },
   { name: "foam/core/CoreTypesValidationTest" },

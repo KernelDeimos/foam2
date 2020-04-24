@@ -69,13 +69,13 @@ foam.CLASS({
       this.start('h1').add(this.title).end()
         .start()
         .add(this.slot(
-          (sectionsList) => {
-            return this.E().forEach(sectionsList,
-              (dataEntry) => (dataEntry.sections).map(
+          (sections) => {
+            return this.E().forEach(sections,
+              (sectionList) => (sectionList.sections).map(
                 (section) =>
                   this.tag(this.sectionView, {
                     section: section,
-                    data: dataEntry.data
+                    data: sectionList.capabilityInfo.data
                   })
               )
             );
@@ -94,24 +94,21 @@ foam.CLASS({
       name: 'submit',
       code: function(x) {
         console.log('submit');
-        this.sectionsList.forEach((model, i) => {
-          let dao = this.__subSubContext__[model.dao];
-          dao.find(model.daoKey)
-          .then((result) => {
-            let objToSubmit;
-            if ( result ) objToSubmit = result.copyFrom(model.data);
-            else objToSubmit = dao.of.create(model.data, this);
-            dao.put(objToSubmit).then(
-              () => {
-                this.notify(this.SUCCESS_MSG);
-                this.stack.back();
-              }
-            ).catch(
-              (e) => this.notify(this.ERROR_MSG + `${e && e.message ? ': ' + e.message : (e ? ': ' + e : '')}`, 'error')
-            );
-          }).catch(
-            (e) => this.notify(this.ERROR_MSG + `${e && e.message ? ': ' + e.message : (e ? ': ' + e : '')}`, 'error')
-          );
+        this.sections.forEach(section => {
+          let dao = this.__subSubContext__[section.capabilityInfo.daoKey];
+          dao.find(section.capabilityInfo.arg).then(result => {
+            var objToSubmit;
+            var data = section.capabilityInfo.data || {};
+            if ( result ) objToSubmit = result.copyFrom(data);
+            else objToSubmit = section.capabilityInfo.of.create(data, this);
+            return dao.put(objToSubmit).then(() => {
+              this.notify(this.SUCCESS_MSG);
+              this.stack.back();
+            });
+          }).catch((e) => {
+            this.notify(this.ERROR_MSG +
+              `${e && e.message ? ': ' + e.message : (e ? ': ' + e : '')}`, 'error');
+          });
         });
       }
     },
@@ -121,17 +118,17 @@ foam.CLASS({
 
         var userCapabilityJunctionDAO = x.userCapabilityJunctionDAO;
 
-        this.sectionsList.forEach((m, i) => {
+        this.sections.forEach(section => {
           var ucj = foam.nanos.crunch.UserCapabilityJunction.create({
             sourceId: x.user.id,
-            targetId: this.capsList[i],
+            targetId: section.capabilityInfo.id,
             data: m.data
           });
           userCapabilityJunctionDAO.put_(x, ucj)
-        });
         
-        x.ctrl.notify('Your progress has been saved.');
-        x.stack.back();
+          x.ctrl.notify('Your progress has been saved.');
+          x.stack.back();
+        });
       }
     }
   ]
