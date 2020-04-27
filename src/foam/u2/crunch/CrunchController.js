@@ -14,7 +14,7 @@ foam.CLASS({
     'ctrl',
     'prerequisiteCapabilityJunctionDAO',
     'stack',
-    'user'
+    'user',
     'userCapabilityJunctionDAO',
   ],
 
@@ -22,23 +22,20 @@ foam.CLASS({
     'foam.nanos.crunch.Capability',
     'foam.nanos.crunch.CapabilityCapabilityJunction',
     'foam.nanos.crunch.UserCapabilityJunction',
-    'foam.nanos.crunch.ui.WizardCapabilityInfo'
+    'foam.nanos.crunch.ui.CapabilityWizardSection'
   ],
 
   methods: [
-    function launchWizard(capabilityId) {
-      var self = this;
-
-      var ofList = []; // This is what the wizard wants
-      var tcList = []; // but we need this first
+    function getTC(capabilityId) {
+      var tcList = [];
       var tcRecurse = () => {}; // and we'll do it with this
 
       // Pre-Order Traversial of Capability Dependancies.
       // Using Pre-Order here will cause the wizard to display
       // dependancies in a logical order.
       tcRecurse = (sourceId) => {
-        return self.prerequisiteCapabilityJunctionDAO.where(
-          self.EQ(self.CapabilityCapabilityJunction.SOURCE_ID, sourceId)
+        return this.prerequisiteCapabilityJunctionDAO.where(
+          this.EQ(this.CapabilityCapabilityJunction.SOURCE_ID, sourceId)
         ).select().then((result) => {
           var arry = result.array;
 
@@ -54,37 +51,44 @@ foam.CLASS({
         });
       };
 
-      // Create capsList for the wizard
-      let capInfosPromise = tcRecurse(capabilityId).then(() => {
-        return self.capabilityDAO.where(
-          self.IN(self.Capability.ID, tcList)
-        ).select().then((results) => {
-          var userID = self.user.id;
+      return tcRecurse(capabilityId).then(() => tcList);
+    },
+    function getCapabilities(capabilityId) {
+      return this.getTC(capabilityId).then(
+        tcList => Promise.all(tcList.map(
+          capId => this.capabilityDAO.find(capId))));
+    },
+    /*
+    just an idea for now
 
-          // Combine Capability and UCJ to create WizardCapabilityInfo objects
-          wizardInfoPromises = results.array.map((cap) => {
-            return self.userCapabilityJunctionDAO.find(
-              self.AND(
-                self.EQ(self.UserCapabilityJunction.SOURCE_ID, userID),
-                self.EQ(self.UserCapabilityJunction.TARGET_ID, cap.id))
-            ).then(data => {
-              return self.WizardCapabilityInfo.create({
-                id: cap.id,
-                of: cap.of,
-                daoKey: cap.daoKey,
-                arg: this.ctrl[cap.daoFindKey] &&
-                  this.ctrl[cap.daoFindKey].id,
-                data: data || null
-              })
-            });
-          });
+    function getSections(capabilityList) {
+      var wizardSections = [];
 
-          return Promise.all(wizardInfoPromises).then(
-            wizardInfos =>
-              wizardInfos.filter(wizardInfo => !! wizardInfo.of));
-
-        });
+      capabilityList.forEach(capability => {
+        var listOfSectionAxiomsFromClass = of.getAxiomsByClass(this.SectionAxiom);
+        var listOfSectionsFromClass = listOfSectionAxiomsFromClass
+          .sort((a, b) => a.order - b.order)
+          .map((a) => this.Section.create().fromSectionAxiom(a, of));
+        let unSectionedPropertiesSection = this.checkForUnusedProperties(listOfSectionsFromClass, of); // this also will handle models with no sections
+        if ( unSectionedPropertiesSection ) listOfSectionsFromClass.push(unSectionedPropertiesSection);
       });
+    },
+    */
+    function launchWizard(capabilityId) {
+      var self = this;
+
+      this.getCapabilities(capabilityId).then(capabilities => {
+        // Map capabilities to CapabilityWizardSection objects
+        return Promise.all(capabilities.map(
+          cap => this.CapabilityWizardSection.create({
+            capability: cap
+          }).updateUCJ()
+        ));
+      }).then(sections => {
+        console.log(sections);
+      });
+
+      /*
       this.capabilityDAO.find(capabilityId).then((cap) => {
         // Summon the wizard; accio!
         capInfosPromise.then(capInfos => {
@@ -95,6 +99,7 @@ foam.CLASS({
           });
         });
       });
+      */
     }
   ]
 });
