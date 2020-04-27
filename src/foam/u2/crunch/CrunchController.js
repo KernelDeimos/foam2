@@ -13,12 +13,16 @@ foam.CLASS({
     'capabilityDAO',
     'ctrl',
     'prerequisiteCapabilityJunctionDAO',
-    'stack'
+    'stack',
+    'user'
+    'userCapabilityJunctionDAO',
   ],
 
   requires: [
     'foam.nanos.crunch.Capability',
-    'foam.nanos.crunch.CapabilityCapabilityJunction'
+    'foam.nanos.crunch.CapabilityCapabilityJunction',
+    'foam.nanos.crunch.UserCapabilityJunction',
+    'foam.nanos.crunch.ui.WizardCapabilityInfo'
   ],
 
   methods: [
@@ -50,40 +54,45 @@ foam.CLASS({
         });
       };
 
-      // Create "ofList" for the wizard
-      let p = tcRecurse(capabilityId).then(() => {
+      // Create capsList for the wizard
+      let capInfosPromise = tcRecurse(capabilityId).then(() => {
         return self.capabilityDAO.where(
           self.IN(self.Capability.ID, tcList)
         ).select().then((results) => {
-          // Get the Capability objects in a map because it's faster than sorting
-          var capabilityMap = {};
-          results.array.forEach((cap) => capabilityMap[cap.id] = cap);
-            // Collect lists for fullfilling the requirements for any given capability.
-            ofList = tcList
-              .filter((capID) => !! capabilityMap[capID].of)
-              .map((capID) => capabilityMap[capID].of);
+          var userID = self.user.id;
 
-            daoList = tcList
-              .filter((capID) => !! capabilityMap[capID].of && !! capabilityMap[capID].daoKey)
-              .map((capID) => capabilityMap[capID].daoKey);
-
-            argsList = tcList
-              .filter((capID) => !! capabilityMap[capID].of && !! capabilityMap[capID].daoFindKey)
-              .map((capID) =>
-                this.ctrl[capabilityMap[capID].daoFindKey].id);
-          });
-        });
-        this.capabilityDAO.find(capabilityId).then((cap) => {
-          // Summon the wizard; accio!
-          p.then(() => {
-            self.stack.push({
-              class: 'foam.nanos.crunch.ui.ScrollSectionWizardView',
-              title: cap.name,
-              daoList: daoList,
-              ofList: ofList,
-              argsList: argsList,
-              capsList: tcList
+          // Combine Capability and UCJ to create WizardCapabilityInfo objects
+          wizardInfoPromises = results.array.map((cap) => {
+            return self.userCapabilityJunctionDAO.find(
+              self.AND(
+                self.EQ(self.UserCapabilityJunction.SOURCE_ID, userID),
+                self.EQ(self.UserCapabilityJunction.TARGET_ID, cap.id))
+            ).then(data => {
+              return self.WizardCapabilityInfo.create({
+                id: cap.id,
+                of: cap.of,
+                daoKey: cap.daoKey,
+                arg: this.ctrl[cap.daoFindKey] &&
+                  this.ctrl[cap.daoFindKey].id,
+                data: data || null
+              })
             });
+          });
+
+          return Promise.all(wizardInfoPromises).then(
+            wizardInfos =>
+              wizardInfos.filter(wizardInfo => !! wizardInfo.of));
+
+        });
+      });
+      this.capabilityDAO.find(capabilityId).then((cap) => {
+        // Summon the wizard; accio!
+        capInfosPromise.then(capInfos => {
+          self.stack.push({
+            class: 'foam.nanos.crunch.ui.ScrollSectionWizardView',
+            title: cap.name,
+            capabilityInfos: capInfos
+          });
         });
       });
     }
