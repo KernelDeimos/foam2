@@ -79,13 +79,19 @@ foam.CLASS({
 
       this.getCapabilities(capabilityId).then(capabilities => {
         // Map capabilities to CapabilityWizardSection objects
-        return Promise.all(capabilities.map(
+        return Promise.all(capabilities.filter(
+          cap => cap.of
+        ).map(
           cap => this.CapabilityWizardSection.create({
             capability: cap
           }).updateUCJ()
         ));
       }).then(sections => {
         console.log(sections);
+        self.stack.push({
+          class: "foam.nanos.crunch.ui.ScrollSectionWizardView",
+          sectionsList: sections,
+        });
       });
 
       /*

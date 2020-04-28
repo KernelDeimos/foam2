@@ -86,11 +86,11 @@ foam.CLASS({
         .add(this.slot(
           (sectionsList) => {
             return this.E().forEach(sectionsList,
-              (dataEntry) => (dataEntry.sections).map(
+              (wizardSection) => (wizardSection.ofSections).map(
                 (section) =>
                   this.tag(this.sectionView, {
                     section: section,
-                    data: dataEntry.data
+                    data: wizardSection.data
                   })
               )
             );
@@ -121,16 +121,9 @@ foam.CLASS({
     {
       name: 'save',
       code: function(x) {
-        var userCapabilityJunctionDAO = x.userCapabilityJunctionDAO;
-
-        this.sectionsList.forEach((m, i) => {
-          var ucj = foam.nanos.crunch.UserCapabilityJunction.create({
-            sourceId: x.user.id,
-            targetId: this.capsList[i],
-            data: m.data
-          });
-          userCapabilityJunctionDAO.put_(x, ucj);
-        });
+        this.sectionList.forEach(wizardSection => {
+          wizardSection.save();
+        })
         
         x.ctrl.notify('Your progress has been saved.');
         x.stack.back();

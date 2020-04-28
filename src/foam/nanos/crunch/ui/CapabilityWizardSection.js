@@ -12,6 +12,10 @@ foam.CLASS({
   ],
 
   requires: [
+    'foam.core.Action',
+    'foam.core.Property',
+    'foam.layout.Section',
+    'foam.layout.SectionAxiom',
     'foam.nanos.crunch.UserCapabilityJunction',
   ],
 
@@ -27,6 +31,7 @@ foam.CLASS({
     // Properties for WizardSection interface
     {
       name: 'of',
+      class: 'Class',
       expression: function (capability) {
         return capability.of;
       }
@@ -44,22 +49,29 @@ foam.CLASS({
       }
     },
     {
-      name: 'subSections',
+      name: 'ofSections',
       factory: null,
-      expression: function(capability) {
-        if ( ! ofList ) return [];
-
+      expression: function(of) {
+        console.log('of', of);
         let listOfSectionAxiomsFromClass = of.getAxiomsByClass(this.SectionAxiom);
         var listOfSectionsFromClass = listOfSectionAxiomsFromClass
           .sort((a, b) => a.order - b.order)
           .map((a) => this.Section.create().fromSectionAxiom(a, of));
         let unSectionedPropertiesSection = this.checkForUnusedProperties(listOfSectionsFromClass, of); // this also will handle models with no sections
-        if ( unSectionedPropertiesSection ) listOfSectionsFromClass.push(unSectionedPropertiesSection);
-        return { 'data': of.create({}, this), 'sections': listOfSectionsFromClass, 'dao': daoList[index], 'daoKey': this.argsList[index] };
-
-        return sections;
+        if ( unSectionedPropertiesSection )
+          listOfSectionsFromClass.push(unSectionedPropertiesSection);
+        return listOfSectionsFromClass;
       }
     },
+    {
+      name: 'data',
+      expression: function (ucj) {
+        if ( ucj === null ) {
+          return this.of.create({}, this);
+        }
+        return ucj.data;
+      }
+    }
   ],
 
   actions: [
@@ -77,6 +89,31 @@ foam.CLASS({
   ],
 
   methods: [
+    {
+      name: 'checkForUnusedProperties',
+      code: function(sections, of) {
+        var usedAxioms = sections
+          .map((s) => s.properties.concat(s.actions))
+          .flat()
+          .reduce((map, a) => {
+            map[a.name] = true;
+            return map;
+          }, {});
+        var unusedProperties = of.getAxiomsByClass(this.Property)
+          .filter((p) => ! usedAxioms[p.name])
+          .filter((p) => ! p.hidden);
+        var unusedActions = of.getAxiomsByClass(this.Action)
+          .filter((a) => ! usedAxioms[a.name]);
+
+        if ( unusedProperties.length || unusedActions.length ) {
+          return this.Section.create({
+            properties: unusedProperties,
+            actions: unusedActions
+          });
+        }
+        return undefined;
+      }
+    },
     {
       // This can be moved to an expression on the 'data' property
       // iff property expressions unwrap promises.
