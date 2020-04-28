@@ -50,8 +50,9 @@ foam.CLASS({
       name: 'isErrorFree',
       expression: function(sectionsList) {
         var check = true;
-        sectionsList.forEach((m) => {
-          if ( m.data.errors_ ) {
+        sectionsList.forEach((wizardSection) => {
+          console.log(wizardSection.data)
+          if ( wizardSection.data.errors_ ) {
             check = false;
           }
         });
