@@ -42,6 +42,7 @@ foam.CLASS({
     {
       name: 'sectionsList',
       factory: null,
+      /*
       expression: function(ofList) {
         if ( ! ofList ) return [];
 
@@ -57,6 +58,7 @@ foam.CLASS({
 
         return sections;
       }
+      */
     },
     {
       class: 'Array',
