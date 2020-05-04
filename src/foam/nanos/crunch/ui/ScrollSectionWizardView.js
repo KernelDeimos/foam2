@@ -57,6 +57,23 @@ foam.CLASS({
         });
         return check;
       }
+    },
+    {
+      name: 'testProp',
+      class: 'FObjectProperty',
+      of: 'foam.nanos.cron.IntervalSchedule',
+      factory: () => {
+        var val = foam.nanos.cron.IntervalSchedule.create({
+          duration: foam.nanos.cron.TimeHMS.create({
+            hour: 5,
+            minute: 5,
+            second: 5
+          })
+        });
+        console.log('created1', val);
+        console.log('created2', val.duration.hour);
+        return val;
+      }
     }
   ],
 
@@ -87,11 +104,15 @@ foam.CLASS({
           (sectionsList) => {
             return this.E().forEach(sectionsList,
               (dataEntry) => (dataEntry.sections).map(
-                (section) =>
-                  this.tag(this.sectionView, {
+                (section) => {
+                  console.log('given', self.testProp,
+                    self.testProp.hour);
+                  this.tag(foam.u2.detail.SectionView, {
                     section: section,
-                    data: dataEntry.data
+                    data$: self.testProp$,
+                    debugProp: 'yes'
                   })
+                }
               )
             );
           }

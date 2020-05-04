@@ -32,6 +32,18 @@ foam.CLASS({
       name: 'duration',
       factory: () => {
         return foam.nanos.cron.TimeHMS.create();
+      },
+      postSet: function (o, n) {
+        console.log('ch-dur', o, n);
+        if ( true
+          && o !== undefined
+          && n !== undefined
+          && o.hour === 5
+          && n.hour === 0
+        ) {
+          console.log('FOUND', new Error().stack);
+          debugger;
+        }
       }
     },
     {

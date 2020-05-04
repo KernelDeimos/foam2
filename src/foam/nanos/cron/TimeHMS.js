@@ -13,21 +13,33 @@ foam.CLASS({
     Does not model a date.
   `,
 
+  sections: [
+    {
+      name: 'test'
+    }
+  ],
+
   properties: [
     {
       class: 'Int',
       name: 'hour',
-      gridColumns: 4
+      gridColumns: 4,
+      postSet: function (o, n) {
+        console.log('ch-hour', o, n);
+      },
+      section: 'test'
     },
     {
       class: 'Int',
       name: 'minute',
-      gridColumns: 4
+      gridColumns: 4,
+      section: 'test'
     },
     {
       class: 'Int',
       name: 'second',
-      gridColumns: 4
+      gridColumns: 4,
+      section: 'test'
     }
   ]
 });

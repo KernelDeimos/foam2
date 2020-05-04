@@ -52,6 +52,11 @@ foam.CLASS({
       class: 'Boolean',
       name: 'showTitle',
       value: true
+    },
+    {
+      class: 'String',
+      name: 'debugProp',
+      value: 'default'
     }
   ],
 
@@ -59,6 +64,9 @@ foam.CLASS({
     function initE() {
       var self = this;
       self.SUPER();
+
+      console.log('DATA', self.debugProp, self.data,
+        self.data.duration.hour);
 
       self
         .addClass(self.myClass())
