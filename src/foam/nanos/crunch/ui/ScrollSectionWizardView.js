@@ -61,17 +61,16 @@ foam.CLASS({
     {
       name: 'testProp',
       class: 'FObjectProperty',
-      of: 'foam.nanos.cron.IntervalSchedule',
+      of: 'net.nanopay.crunch.onboardingModels.BusinessInformationData',
       factory: () => {
-        var val = foam.nanos.cron.IntervalSchedule.create({
-          duration: foam.nanos.cron.TimeHMS.create({
-            hour: 5,
-            minute: 5,
-            second: 5
+        var val = net.nanopay.crunch.onboardingModels.BusinessInformationData.create({
+          address: foam.nanos.auth.Address.create({
+            address1: 'hello',
+            address2: 'there',
+            businessName: 'Test Name',
+            operatingBusinessName: 'Operating As'
           })
         });
-        console.log('created1', val);
-        console.log('created2', val.duration.hour);
         return val;
       }
     }
@@ -105,8 +104,6 @@ foam.CLASS({
             return this.E().forEach(sectionsList,
               (dataEntry) => (dataEntry.sections).map(
                 (section) => {
-                  console.log('given', self.testProp,
-                    self.testProp.hour);
                   this.tag(foam.u2.detail.SectionView, {
                     section: section,
                     data$: self.testProp$,

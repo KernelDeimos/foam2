@@ -42,7 +42,7 @@ foam.CLASS({
           && n.hour === 0
         ) {
           console.log('FOUND', new Error().stack);
-          debugger;
+          // debugger;
         }
       }
     },

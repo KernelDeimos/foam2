@@ -65,8 +65,8 @@ foam.CLASS({
       var self = this;
       self.SUPER();
 
-      console.log('DATA', self.debugProp, self.data,
-        self.data.duration.hour);
+      // console.log('DATA', self.debugProp, self.data,
+        // self.data.duration.hour);
 
       self
         .addClass(self.myClass())
