@@ -51,7 +51,6 @@ foam.CLASS({
       expression: function(sectionsList) {
         var check = true;
         sectionsList.forEach((wizardSection) => {
-          console.log(wizardSection.data)
           if ( wizardSection.data.errors_ ) {
             check = false;
           }

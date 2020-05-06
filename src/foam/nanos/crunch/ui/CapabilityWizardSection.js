@@ -52,7 +52,6 @@ foam.CLASS({
       name: 'ofSections',
       factory: null,
       expression: function(of) {
-        console.log('of', of);
         let listOfSectionAxiomsFromClass = of.getAxiomsByClass(this.SectionAxiom);
         var listOfSectionsFromClass = listOfSectionAxiomsFromClass
           .sort((a, b) => a.order - b.order)
@@ -78,7 +77,6 @@ foam.CLASS({
     {
       name: 'save',
       code: function() {
-        console.log('action this', this);
         this.updateUCJ().then(() => {
           var ucj = this.ucj;
           ucj.data = this.data;
