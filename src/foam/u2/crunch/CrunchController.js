@@ -78,18 +78,6 @@ foam.CLASS({
         });
       });
 
-      /*
-      this.capabilityDAO.find(capabilityId).then((cap) => {
-        // Summon the wizard; accio!
-        capInfosPromise.then(capInfos => {
-          self.stack.push({
-            class: 'foam.nanos.crunch.ui.ScrollSectionWizardView',
-            title: cap.name,
-            capabilityInfos: capInfos
-          });
-        });
-      });
-      */
     }
   ]
 });
