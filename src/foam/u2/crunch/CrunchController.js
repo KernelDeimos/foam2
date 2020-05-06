@@ -61,7 +61,7 @@ foam.CLASS({
     function launchWizard(capabilityId) {
       var self = this;
 
-      this.getCapabilities(capabilityId).then(capabilities => {
+      return this.getCapabilities(capabilityId).then(capabilities => {
         // Map capabilities to CapabilityWizardSection objects
         return Promise.all(capabilities.filter(
           cap => cap.of
@@ -72,9 +72,18 @@ foam.CLASS({
         ));
       }).then(sections => {
         console.log(sections);
-        self.stack.push({
-          class: "foam.nanos.crunch.ui.ScrollSectionWizardView",
-          sectionsList: sections
+        return new Promise((wizardResolve) => {
+          var pos = self.stack.pos;
+          self.stack.pos$.sub((sub) => {
+            if (self.stack.pos === pos) {
+              wizardResolve();
+              sub.detach();
+            }
+          });
+          self.stack.push({
+            class: "foam.nanos.crunch.ui.ScrollSectionWizardView",
+            sectionsList: sections
+          });
         });
       });
 
