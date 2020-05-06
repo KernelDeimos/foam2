@@ -15,7 +15,7 @@ foam.CLASS({
     'prerequisiteCapabilityJunctionDAO',
     'stack',
     'user',
-    'userCapabilityJunctionDAO',
+    'userCapabilityJunctionDAO'
   ],
 
   requires: [
@@ -74,7 +74,7 @@ foam.CLASS({
         console.log(sections);
         self.stack.push({
           class: "foam.nanos.crunch.ui.ScrollSectionWizardView",
-          sectionsList: sections,
+          sectionsList: sections
         });
       });
 
