@@ -121,12 +121,12 @@ foam.CLASS({
     {
       name: 'save',
       code: function(x) {
-        this.sectionsList.forEach(wizardSection => {
-          wizardSection.save();
-        })
-        
-        x.ctrl.notify('Your progress has been saved.');
-        x.stack.back();
+        Promise.all(
+          this.sectionsList.map(wizardSection => wizardSection.save())
+        ).then(() => {
+          x.ctrl.notify('Your progress has been saved.');
+          x.stack.back();
+        });
       }
     }
   ]

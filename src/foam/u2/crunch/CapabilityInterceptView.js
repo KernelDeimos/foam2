@@ -92,10 +92,14 @@ foam.CLASS({
                           // Query UCJ status
                           this.userCapabilityJunctionDAO.where(this.AND(
                             this.EQ(this.UserCapabilityJunction.SOURCE_ID, this.user.id),
-                            this.EQ(this.UserCapabilityJunction.SOURCE_ID, cap.id)
+                            this.EQ(this.UserCapabilityJunction.TARGET_ID, cap.id)
                           )).limit(1).select(this.PROJECTION(
                             this.UserCapabilityJunction.STATUS
                           )).then(results => {
+                            if ( results.array.length < 1 ) {
+                              view.reject();
+                              return;
+                            }
                             var status = results.array[0][0];
                             switch (status) {
                               case this.CapabilityJunctionStatus.GRANTED:
