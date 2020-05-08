@@ -100,7 +100,8 @@ foam.CLASS({
                               view.reject();
                               return;
                             }
-                            var status = results.array[0][0];
+                            var entry = results.array[0]; // limit 1
+                            var status = entry[0]; // first field (status)
                             switch (status) {
                               case this.CapabilityJunctionStatus.GRANTED:
                                 view.aquire();
@@ -122,7 +123,6 @@ foam.CLASS({
         .end();
     },
     function aquire() {
-      // todo find which capability was applied for
       this.capabilityAquired = true;
       this.capabilityOptions.forEach((c) => {
         this.capabilityCache.set(c, true);
@@ -132,7 +132,6 @@ foam.CLASS({
       location.reload();
     },
     function reject() {
-      // todo find which capability was applied for
       this.capabilityCancelled = true;
       this.capabilityOptions.forEach((c) => {
         this.capabilityCache.set(c, true);
