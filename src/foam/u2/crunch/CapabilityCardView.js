@@ -68,6 +68,18 @@ foam.CLASS({
                   .add("granted")
                   ;
                   break;
+              case self.CapabilityJunctionStatus.PENDING:
+                badge
+                  .addClass(self.s.myClass('badge-warn'))
+                  .add("pending")
+                  ;
+                  break;
+              case self.CapabilityJunctionStatus.EXPIRED:
+                badge
+                  .addClass(self.s.myClass('badge-bad'))
+                  .add("expired")
+                  ;
+                  break;
               default:
                 badge
                   .addClass(self.s.myClass('badge-bad'))

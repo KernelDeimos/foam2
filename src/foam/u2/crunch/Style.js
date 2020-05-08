@@ -175,6 +175,9 @@ foam.CLASS({
     ^badge-good {
       background-color: #32bf5e;
     }
+    ^badge-warn {
+      background-color: #bfae32;
+    }
     ^badge-info {
       background-color: #604aff;
     }
