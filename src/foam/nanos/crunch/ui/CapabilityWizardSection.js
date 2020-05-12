@@ -52,6 +52,7 @@ foam.CLASS({
       name: 'ofSections',
       factory: null,
       expression: function(of) {
+        if ( ! of ) return null;
         let listOfSectionAxiomsFromClass = of.getAxiomsByClass(this.SectionAxiom);
         var listOfSectionsFromClass = listOfSectionAxiomsFromClass
           .sort((a, b) => a.order - b.order)
@@ -64,11 +65,12 @@ foam.CLASS({
     },
     {
       name: 'data',
-      expression: function (ucj) {
-        if ( ucj === null ) {
+      factory: function () {
+        if ( ! this.of ) return null;
+        if ( this.ucj === null ) {
           return this.of.create({}, this);
         }
-        return ucj.data;
+        return this.ucj.data;
       }
     }
   ],
@@ -79,7 +81,13 @@ foam.CLASS({
       code: function() {
         this.updateUCJ().then(() => {
           var ucj = this.ucj;
-          ucj.data = this.data;
+          if ( ucj === null ) {
+            ucj = this.UserCapabilityJunction.create({
+              sourceId: this.user.id,
+              targetId: this.capability.id
+            })
+          }
+          if ( this.of ) ucj.data = this.data;
           return this.userCapabilityJunctionDAO.put(ucj);
         });
       }
