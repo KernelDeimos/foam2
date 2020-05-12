@@ -21,6 +21,7 @@ foam.CLASS({
   requires: [
     'foam.nanos.crunch.Capability',
     'foam.nanos.crunch.CapabilityCapabilityJunction',
+    'foam.nanos.crunch.CapabilityJunctionStatus',
     'foam.nanos.crunch.UserCapabilityJunction',
     'foam.nanos.crunch.ui.CapabilityWizardSection'
   ],
@@ -63,15 +64,12 @@ foam.CLASS({
 
       return this.getCapabilities(capabilityId).then(capabilities => {
         // Map capabilities to CapabilityWizardSection objects
-        return Promise.all(capabilities.filter(
-          cap => cap.of
-        ).map(
+        return Promise.all(capabilities.map(
           cap => this.CapabilityWizardSection.create({
             capability: cap
           }).updateUCJ()
         ));
       }).then(sections => {
-        console.log(sections);
         return new Promise((wizardResolve) => {
           var pos = self.stack.pos;
           self.stack.pos$.sub((sub) => {

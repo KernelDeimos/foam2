@@ -56,6 +56,7 @@ foam.CLASS({
       expression: function(sectionsList) {
         var check = true;
         sectionsList.forEach((wizardSection) => {
+          if ( ! wizardSection.of ) return true;
           if ( wizardSection.data.errors_ ) {
             check = false;
           }
@@ -90,7 +91,8 @@ foam.CLASS({
         .start()
         .add(this.slot(
           (sectionsList) => {
-            return this.E().forEach(sectionsList,
+            return this.E().forEach(
+              sectionsList.filter((section) => section.of),
               (wizardSection) => (wizardSection.ofSections).map(
                 (section) =>
                   this.tag(this.sectionView, {
