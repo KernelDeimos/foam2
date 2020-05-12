@@ -20,6 +20,11 @@ foam.CLASS({
     'foam.mlang.Expressions'
   ],
 
+  messages: [
+    { name: 'SaveSuccess', message: 'Your progress has been saved.' },
+    { name: 'SaveFail', message: 'An error occured while saving your progress.' },
+  ],
+
   css: `
     ^ {
       margin: 30px;
