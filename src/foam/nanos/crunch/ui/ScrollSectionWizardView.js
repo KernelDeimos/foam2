@@ -29,11 +29,26 @@ foam.CLASS({
     ^ {
       margin: 30px;
     }
+
+    ^ .inner-card {
+      padding: 14px 16px
+    }
+
+    ^ .foam-u2-view-ScrollTableView table {
+      width: 100%;
+    }
+
+    ^ ^card-container + ^card-container {
+      margin-top: 16px;
+    }
   `,
 
   requires: [
     'foam.nanos.crunch.Capability',
-    'foam.nanos.crunch.UserCapabilityJunction'
+    'foam.nanos.crunch.UserCapabilityJunction',
+    'foam.u2.layout.Grid',
+    'foam.u2.layout.GUnit',
+    'foam.u2.borders.CardBorder'
   ],
 
   properties: [
@@ -63,6 +78,13 @@ foam.CLASS({
         });
         return check;
       }
+    },
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'border',
+      factory: function() {
+        return this.CardBorder;
+      }
     }
   ],
 
@@ -91,14 +113,21 @@ foam.CLASS({
         .start()
         .add(this.slot(
           (sectionsList) => {
-            return this.E().forEach(
+            return self.Grid.create().forEach(
               sectionsList.filter((section) => section.of),
               (wizardSection) => (wizardSection.ofSections).map(
                 (section) =>
-                  this.tag(this.sectionView, {
-                    section: section,
-                    data: wizardSection.data
-                  })
+                  this
+                    .start(self.GUnit, { columns: section.gridColumns })
+                      .addClass(self.myClass('card-container'))
+                      .start(self.border)
+                        .addClass('inner-card')
+                        .tag(this.sectionView, {
+                          section: section,
+                          data: wizardSection.data
+                        })
+                      .end()
+                    .end()
               )
             );
           }
@@ -106,6 +135,7 @@ foam.CLASS({
       .end()
       .startContext({ data: this })
         .tag(this.EXIT, { size: 'LARGE' })
+        .tag(this.DEBUG, { size: "LARGE" })
         .callIfElse( this.isErrorFree,
           function() {
             self.tag(this.SAVE, { size: 'LARGE', label: this.ACTION_LABEL });
@@ -123,6 +153,12 @@ foam.CLASS({
       confirmationRequired: true,
       code: function(x) {
         x.stack.back();
+      }
+    },
+    {
+      name: 'debug',
+      code: function(x) {
+        console.log(this.sectionsList.map(ws => ws.capability.id));
       }
     },
     {
