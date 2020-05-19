@@ -7,7 +7,8 @@
 foam.CLASS({
   package: 'foam.nanos.crunch.ui',
   name: 'ScrollSectionWizardView',
-  extends: 'foam.u2.detail.MultipleModelSectionedDetailView',
+  extends: 'foam.u2.View',
+  // extends: 'foam.u2.detail.MultipleModelSectionedDetailView',
 
   documentation: `Simply displays "sections" consecutively.`,
 
@@ -51,6 +52,11 @@ foam.CLASS({
       value: { class: 'foam.u2.detail.SectionView' }
     },
     {
+      name: 'sectionsList',
+      class: 'FObjectArray',
+      of: 'foam.nanos.crunch.ui.CapabilityWizardSection'
+    },
+    {
       class: 'Boolean',
       name: 'isErrorFree',
       expression: function(sectionsList) {
@@ -85,7 +91,6 @@ foam.CLASS({
   methods: [
     function initE() {
       var self = this;
-      this.SUPER();
       this.addClass(this.myClass());
       this.start('h1').add(this.title).end()
         .start()
