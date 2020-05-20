@@ -22,8 +22,12 @@ foam.CLASS({
   ],
 
   messages: [
-    { name: 'SaveSuccess', message: 'Your progress has been saved.' },
-    { name: 'SaveFail', message: 'An error occured while saving your progress.' },
+    { name: 'ACTION_LABEL', message: 'Submit' },
+    { name: 'SAVE_IN_PROGRESS', message: 'Saving...' },
+    { name: 'ERROR_MSG', message: 'Information was not successfully submitted, please try again later' },
+    { name: 'ERROR_MSG_DRAFT', message: 'An error occured while saving your progress.' },
+    { name: 'SUCCESS_MSG', message: 'Information successfully submitted.' },
+    { name: 'SUCCESS_MSG_DRAFT', message: 'Your progress has been saved.' },
   ],
 
   css: `
@@ -71,12 +75,6 @@ foam.CLASS({
         return check;
       }
     }
-  ],
-
-  messages: [
-    { name: 'SUCCESS_MSG', message: 'Information successfully submitted.' },
-    { name: 'ERROR_MSG', message: 'Information was not successfully submitted, please try again later' },
-    { name: 'ACTION_LABEL', message: 'Submit' },
   ],
 
   listeners: [
@@ -142,10 +140,13 @@ foam.CLASS({
         this.sectionsList.reduce(
           (p, wizardSection) => p.then(() => wizardSection.save()), p
         ).then(() => {
-          x.ctrl.notify('Your progress has been saved.');
+          x.ctrl.notify(this.isErrorFree ? this.SUCCESS_MSG : this.SUCCESS_MSG_DRAFT);
           x.stack.back();
-        }).catch((e) => {
-          x.ctrl.notify('Error saving progress:' + e)
+        }).catch(e => {
+          x.ctrl.notify(
+            (this.isErrorFree ? this.ERROR_MSG : this.ERROR_MSG_DRAFT)
+            + ': ' + e
+          );
         });
       }
     }
