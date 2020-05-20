@@ -23,7 +23,7 @@ foam.CLASS({
     'foam.nanos.crunch.CapabilityCapabilityJunction',
     'foam.nanos.crunch.CapabilityJunctionStatus',
     'foam.nanos.crunch.UserCapabilityJunction',
-    'foam.nanos.crunch.ui.CapabilityWizardSection'
+    'foam.nanos.crunch.ui.CapabilityWizardlet'
   ],
 
   methods: [
@@ -65,7 +65,7 @@ foam.CLASS({
       return this.getCapabilities(capabilityId).then(capabilities => {
         // Map capabilities to CapabilityWizardSection objects
         return Promise.all(capabilities.map(
-          cap => this.CapabilityWizardSection.create({
+          cap => this.CapabilityWizardlet.create({
             capability: cap
           }).updateUCJ()
         ));
@@ -85,8 +85,8 @@ foam.CLASS({
             )
           );
           self.stack.push({
-            class: "foam.nanos.crunch.ui.ScrollSectionWizardView",
-            sectionsList: sections
+            class: "foam.u2.wizard.ScrollWizardletView",
+            wizardlets: sections
           });
         });
       });
