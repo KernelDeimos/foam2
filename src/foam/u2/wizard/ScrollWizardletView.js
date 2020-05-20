@@ -5,12 +5,11 @@
  */
 
 foam.CLASS({
-  package: 'foam.nanos.crunch.ui',
-  name: 'ScrollSectionWizardView',
-  extends: 'foam.u2.View',
-  // extends: 'foam.u2.detail.MultipleModelSectionedDetailView',
+  package: 'foam.u2.wizard',
+  name: 'ScrollWizardletView',
+  extends: 'foam.u2.wizard.WizardletView',
 
-  documentation: `Simply displays "sections" consecutively.`,
+  documentation: `Simply displays wizardlets consecutively.`,
 
   imports: [
     'notify',
@@ -37,52 +36,21 @@ foam.CLASS({
   `,
 
   requires: [
-    'foam.nanos.crunch.Capability',
-    'foam.nanos.crunch.UserCapabilityJunction',
     'foam.u2.detail.VerticalDetailView'
   ],
 
   properties: [
     {
-      class: 'String',
-      name: 'title'
-    },
-    {
-      class: 'DateTime',
-      name: 'lastUpdate'
-    },
-    {
-      class: 'foam.u2.ViewSpec',
-      name: 'sectionView',
-      value: { class: 'foam.u2.detail.SectionView' }
-    },
-    {
-      name: 'sectionsList',
-      class: 'FObjectArray',
-      of: 'foam.nanos.crunch.ui.CapabilityWizardSection'
-    },
-    {
       class: 'Boolean',
       name: 'isErrorFree',
-      expression: function(sectionsList) {
+      expression: function(wizardlets) {
         var check = true;
-        sectionsList.forEach((wizardSection) => {
-          if ( ! wizardSection.of ) return true;
-          if ( ! wizardSection.data || wizardSection.data.errors_ ) {
+        wizardlets.forEach(wizardlet => {
+          if ( ! wizardlet.readyToSubmit() ) {
             check = false;
           }
         });
         return check;
-      }
-    }
-  ],
-
-  listeners: [
-    {
-      name: 'onDataUpdate',
-      isFramed: true,
-      code: function() {
-        this.lastUpdate = new Date();
       }
     }
   ],
@@ -94,17 +62,17 @@ foam.CLASS({
       this.start('h1').add(this.title).end()
         .start()
         .add(this.slot(
-          (sectionsList) => {
+          wizardlets => {
             return this.E().forEach(
-              sectionsList.filter(section => section.of),
-              wizardSection => {
+              wizardlets.filter(section => section.of),
+              wizardlet => {
                 var subThis = this.startContext({});
                 subThis.__subSubContext__.register(
                   this.VerticalDetailView,
                   'foam.u2.detail.SectionedDetailView'
                 );
                 subThis.tag(this.VerticalDetailView, {
-                  data: wizardSection.data
+                  data: wizardlet.data
                 });
               }
             );
@@ -137,8 +105,8 @@ foam.CLASS({
       code: function(x) {
         var p = Promise.resolve();
 
-        this.sectionsList.reduce(
-          (p, wizardSection) => p.then(() => wizardSection.save()), p
+        this.wizardlets.reduce(
+          (p, wizardlet) => p.then(() => wizardlet.save()), p
         ).then(() => {
           x.ctrl.notify(this.isErrorFree ? this.SUCCESS_MSG : this.SUCCESS_MSG_DRAFT);
           x.stack.back();
