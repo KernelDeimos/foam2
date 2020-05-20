@@ -40,15 +40,17 @@ foam.CLASS({
       name: 'data',
       factory: function () {
         if ( ! this.of ) return null;
-        if ( this.ucj === null ) {
-          return this.of.create({}, this);
-        }
-        return this.ucj.data;
+
+        var ret = this.of.create({}, this);
+        if ( this.ucj === null ) return ret;
+      
+        ret = Object.assign(ret, this.ucj.data);
+        return ret;
       }
     }
   ],
 
-  actions: [
+  methods: [
     {
       name: 'save',
       code: function() {
@@ -65,9 +67,6 @@ foam.CLASS({
         });
       }
     },
-  ],
-
-  methods: [
     {
       // This can be moved to an expression on the 'data' property
       // iff property expressions unwrap promises.
