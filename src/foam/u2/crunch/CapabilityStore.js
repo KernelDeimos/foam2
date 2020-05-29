@@ -23,7 +23,7 @@ foam.CLASS({
     'foam.u2.crunch.CapabilityCardView',
     'foam.u2.crunch.CapabilityFeatureView',
     'foam.u2.layout.Grid',
-    'foam.u2.layout.GUnit',
+    'foam.u2.layout.GUnit'
   ],
 
   imports: [
