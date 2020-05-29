@@ -61,7 +61,7 @@ foam.CLASS({
             }
             var badge = self.ReadOnlyEnumView.create({
               data: statusEnum
-            }).addClass(self.s.myClass('badge')).style({
+            }).addClass(style.myClass('badge')).style({
               'background-color': statusEnum.background
             });
             badgeWrapper.add(badge);
