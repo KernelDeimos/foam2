@@ -4,7 +4,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Int',
   extends: 'Property',
@@ -29,7 +29,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'String',
   extends: 'Property',
@@ -80,7 +80,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Date',
   extends: 'Property',
@@ -132,7 +132,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'DateTime',
   extends: 'Date',
@@ -146,7 +146,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Time',
   extends: 'String',
@@ -160,7 +160,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Byte',
   extends: 'Int',
@@ -176,7 +176,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Short',
   extends: 'Int',
@@ -192,7 +192,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name:  'Long',
   extends: 'Int',
@@ -206,7 +206,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Float',
   extends: 'Int',
@@ -230,7 +230,7 @@ foam.CLASS({
 /**
  No different than Float for JS, but useful when targeting with other languages.
  **/
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Double',
   extends: 'Float',
@@ -240,7 +240,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Function',
   extends: 'Property',
@@ -263,7 +263,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Duration',
   extends: 'Long',
@@ -282,7 +282,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Object',
   extends: 'Property',
@@ -293,7 +293,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Array',
   extends: 'Property',
@@ -346,7 +346,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'List',
   extends: 'foam.core.Object',
@@ -356,7 +356,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'StringArray',
   extends: 'Property',
@@ -409,7 +409,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Class',
   extends: 'Property',
@@ -473,7 +473,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'EMail',
   extends: 'String',
@@ -491,7 +491,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Image',
   extends: 'String',
@@ -501,7 +501,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'URL',
   extends: 'String',
@@ -511,7 +511,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Color',
   extends: 'String',
@@ -520,7 +520,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Password',
   extends: 'String',
@@ -528,7 +528,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'PhoneNumber',
   extends: 'String',
@@ -537,14 +537,14 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Code',
   extends: 'String'
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'UnitValue',
   extends: 'Long',
@@ -561,7 +561,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Map',
   extends: 'Property',
@@ -639,7 +639,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'FObjectProperty',
   extends: 'Property',
@@ -717,7 +717,7 @@ foam.CLASS({
 });
 
 
-foam.CLASS({
+foam.PROPERTY({
   package: 'foam.core',
   name: 'Reference',
   extends: 'Property',
