@@ -695,3 +695,31 @@ foam.CLASS({
     }
   ]
 });
+
+foam.LIB({
+  name: 'foam',
+  methods: [
+    function PROPERTY(m) {
+      var returnValue = foam.CLASS(m);
+
+      console.log(
+        'Making a model...',
+        m.package + '.' + m.name
+      )
+
+      foam.CLASS({
+        package: m.package,
+        name: m.name + 'Data',
+
+        properties: [
+          {
+            name: 'data',
+            class: m.package + '.' + m.name
+          }
+        ]
+      });
+
+      return returnValue;
+    }
+  ]
+});
