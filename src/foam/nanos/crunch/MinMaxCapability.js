@@ -59,9 +59,11 @@ foam.CLASS({
 
           switch ( ucJunction.getStatus() ) {
             case GRANTED:
+            case GRACE_PERIOD:
               numberGranted++;
               break;
             case PENDING:
+            case APPROVED:
               numberPending++;
               break;
           }
