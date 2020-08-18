@@ -385,20 +385,23 @@ foam.CLASS({
           UserCapabilityJunction ucJunction =
             crunchService.getJunctionForSubject(x, ccJunction.getTargetId(), subject);
 
-          if ( ucJunction != null && 
-               ( ucJunction.getStatus() == CapabilityJunctionStatus.GRANTED || ucJunction.getStatus() == CapabilityJunctionStatus.GRACE_PERIOD ) 
-             ) 
-              continue;
-          
-
           if ( ucJunction == null ) {
             return CapabilityJunctionStatus.ACTION_REQUIRED;
           }
-          if ( ucJunction.getStatus() != CapabilityJunctionStatus.GRANTED
-               && ucJunction.getStatus() != CapabilityJunctionStatus.PENDING ) {
+
+          if (
+            ucJunction.getStatus() == CapabilityJunctionStatus.GRANTED
+            || ucJunction.getStatus() == CapabilityJunctionStatus.GRACE_PERIOD
+          ) { 
+            continue;
+          }
+
+          if ( ucJunction.getStatus() != CapabilityJunctionStatus.PENDING
+               && ucJunction.getStatus() != CapabilityJunctionStatus.APPROVED ) {
             return CapabilityJunctionStatus.ACTION_REQUIRED;
           }
-          if ( ucJunction.getStatus() == CapabilityJunctionStatus.PENDING ) allGranted = false; 
+
+          allGranted = false; 
         }
         return allGranted ? CapabilityJunctionStatus.GRANTED : CapabilityJunctionStatus.PENDING;
       `,
