@@ -59,7 +59,9 @@ foam.CLASS({
           }
 
           // Call the context agent and pass its exports to the next one
-          return contextAgent.execute().then(() => contextAgent.__subContext__);
+          return contextAgent.execute().then(x => {
+            x || contextAgent.__subContext__
+          });
         })
       }, p);
     },
