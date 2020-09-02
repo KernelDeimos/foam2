@@ -189,7 +189,7 @@ foam.CLASS({
       });
     },
 
-    function createCapableWizard(capable) {
+    function getCapableWizardlets(capable) {
       var wizardlets = [];
       for ( let i = 0 ; i < capable.capablePayloads.length ; i++ ) {
         let capablePayload = capable.capablePayloads[i];
@@ -211,12 +211,13 @@ foam.CLASS({
         wizardlets.push(wizardlet);
       }
 
-      console.log(wizardlets);
-
+      return wizardlets;
+    },
+    function createCapableWizard(capable) {
       return {
         class: 'foam.u2.wizard.StepWizardletView',
         data: foam.u2.wizard.StepWizardletController.create({
-          wizardlets: wizardlets
+          wizardlets: this.getCapableWizardlets(capable)
         }),
         onClose: (x) => {
           x.closeDialog();

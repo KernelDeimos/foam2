@@ -6,7 +6,7 @@
 
 foam.CLASS({
   package: 'foam.nanos.crunch.ui',
-  name: 'CapabilityView',
+  name: 'CapableView',
   extends: 'foam.u2.View',
   documentation: 'All purpose capability view that takes in an array of capability ids and displays those capabilities',
 
@@ -50,7 +50,11 @@ foam.CLASS({
       of: 'foam.u2.wizard.BaseWizardlet',
       name: 'wizardlets',
       documentation: 'wizardlets for the capability',
-      value: []
+      value: [],
+      expression: function(data$capablePayloads) {
+        return this.crunchController
+          .getCapableWizardlets(this.data);
+      }
     },
     {
       class: 'Array',
@@ -59,7 +63,10 @@ foam.CLASS({
         sections for wizardlets
         wizardletSectionsList[i] stores sections for wizardlets[i]
       `,
-      value: []
+      value: [],
+      expression: function(wizardlets) {
+        return this.crunchController.generateSections(wizardlets);
+      }
     },
     {
       name: 'showTitle',
@@ -69,6 +76,7 @@ foam.CLASS({
 
   methods: [
     async function init() {
+
       for ( let capID of this.capabilityIDs ) {
         // get capabilities and wizardlets for capID
         const { caps: curCaps, wizCaps: curWizardlets } =
@@ -81,7 +89,6 @@ foam.CLASS({
         }
 
         // get all the sections associated with curWizardlets
-        const curWizardletSectionsList = this.crunchController.generateSections(curWizardlets);
 
         this.capabilities = this.capabilities.concat(curCaps);
         this.wizardlets = this.wizardlets.concat(curWizardlets);
