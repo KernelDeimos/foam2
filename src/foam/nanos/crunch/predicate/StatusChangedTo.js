@@ -42,7 +42,9 @@ foam.CLASS({
         UserCapabilityJunction newUCJ = (UserCapabilityJunction) x.get("NEW");
 
         if ( getCheckInequality() ) {
-          if ( oldUCJ.getStatus() == newUCJ.getStatus() ) return false;
+          if ( oldUCJ == null ) {
+            if ( newUCJ.getStatus() != AVAILABLE ) return false;
+          } else if ( oldUCJ.getStatus() == newUCJ.getStatus() ) return false;
         }
 
         return newUCJ.getStatus() == getStatus();
