@@ -146,7 +146,6 @@ foam.CLASS({
 
         // Bind availability listener for wizardlet availability
         var isAvailable$ = w.isAvailable$;
-        console.log(wizardletIndex, w, w.isAvailable$, isAvailable$);
         this.wsub.onDetach(isAvailable$.sub(() => {
           this.onWizardletAvailability(wizardletIndex, isAvailable$.get());
         }));
