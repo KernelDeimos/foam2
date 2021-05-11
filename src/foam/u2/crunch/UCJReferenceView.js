@@ -15,6 +15,7 @@ foam.CLASS({
   ],
 
   requires: [
+    'foam.u2.crunch.wizardflow.LoadCapabilitiesAgent',
     'foam.u2.stack.Stack',
     'foam.u2.stack.StackView'
   ],
@@ -53,7 +54,8 @@ foam.CLASS({
         });
         this.crunchController.createWizardSequence(ucj.targetId, x)
           .reconfigure('LoadCapabilitiesAgent', {
-            subject: subject
+            subject: subject,
+            waoSetting: this.LoadCapabilitiesAgent.WAOSetting.APPROVAL
           })
           .reconfigure('ConfigureFlowAgent', {
             popupMode: false
