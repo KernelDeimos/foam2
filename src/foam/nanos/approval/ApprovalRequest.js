@@ -912,7 +912,7 @@
         // this is for create, deleting object approvals
         X.stack.push({
           class: 'foam.comics.v2.DAOSummaryView',
-          data: obj,
+          data: summaryData,
           of: of,
           config: foam.comics.v2.DAOControllerConfig.create({
             daoKey: daoKey,
