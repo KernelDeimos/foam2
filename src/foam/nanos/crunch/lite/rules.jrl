@@ -86,7 +86,7 @@ p({
   },
   "action":{
     "class":"foam.nanos.approval.ApprovalRequestAssignedToRule"
-  },    
+  },
   "enabled":true,
   "saveHistory":false,
   "lifecycleState":1
@@ -121,7 +121,7 @@ p({
   },
   "action":{
     "class":"foam.nanos.approval.ApprovalRequestMemoRule"
-  },    
+  },
   "enabled":true,
   "saveHistory":false,
   "lifecycleState":1

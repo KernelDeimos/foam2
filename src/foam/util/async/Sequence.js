@@ -140,6 +140,7 @@ foam.CLASS({
         let seqspec = this.contextAgentSpecs[i++];
         var spec = seqspec.spec;
         var args = seqspec.args;
+        console.log(seqspec.name);
         // Note: logic copied from ViewSpec; maybe this should be in stdlib
         if ( spec.create ) {
           contextAgent = spec.create(args, x);

@@ -57,19 +57,19 @@ foam.CLASS({
             // if the data is Renewable and expiry is user-configured, get the expiry from the RenewableData,
             // otherwise, get the expiry from the capability
             FObject data = ucj.getData();
-            
+
             Date junctionExpiry = data instanceof RenewableData && ((RenewableData) data).getDataConfiguredExpiry() ?
               ((RenewableData) data).getExpiry() :
-              capability.getExpiry(); 
+              capability.getExpiry();
 
             ucj.resetRenewalStatus();
-    
+
             if ( capability.getDuration() > 0 ) {
               Date today = new Date();
               Calendar calendar = Calendar.getInstance();
               calendar.setTime(today);
               calendar.add(Calendar.DATE, capability.getDuration());
-    
+
               if ( junctionExpiry == null ) {
                 junctionExpiry = calendar.getTime();
               } else {
@@ -81,8 +81,8 @@ foam.CLASS({
             if ( junctionExpiry != null && ( data instanceof RenewableData ) ) {
               ((RenewableData) data).setRenewable(false);
               ucj.setData(data);
-            } 
-    
+            }
+
             if ( capability.getGracePeriod() > 0 ) {
               ucj.setGracePeriod(capability.getGracePeriod());
             }
